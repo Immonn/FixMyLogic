@@ -1,18 +1,16 @@
 import React from 'react';
-import Navbar from "@/app/components/LandingNavbar"
-import AuthModal from '@/app/components/Authmodel';
+import Navbar from "@/app/components/SignupNavbar"
 
-type LandingPageProps = {
+type SignupPageProps = {
     
 };
 
-const LandingPage:React.FC<LandingPageProps> = () => {
+const SignupPage:React.FC<SignupPageProps> = () => {
     
     return <div className='bg-linear-to-b from-gray-600 to-black h-screen relative'>
         <div className="max-w-7xl mx-auto">
             <Navbar/>
-            <AuthModal/>
         </div>
     </div>
 }
-export default LandingPage;
+export default SignupPage;

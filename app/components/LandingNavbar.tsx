@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 
@@ -12,10 +13,14 @@ const LandingNavbar:React.FC<NavbarProps> = () => {
             <img src="/logo.png" alt='FixMyLogic' className='h-full'/>
         </div>
         <div className="flex items-center gap-3">
+            <Link href={"/auth/signup"}>
             <button className='cursor-pointer bg-brand-orange text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
             hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Create Account</button>
+            </Link>
+            <Link href={"/auth/signin"}>
             <button className='cursor-pointer bg-brand-orange text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
             hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Sign In</button>
+            </Link>
             
         </div>
         </div>
