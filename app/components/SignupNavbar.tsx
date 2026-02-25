@@ -14,8 +14,8 @@ const Navbar:React.FC<NavbarProps> = () => {
             </Link>
         <div className="flex items-center">
             <Link href={"/auth/signin"}>
-            <button className='cursor-pointer bg-brand-orange text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
-            hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Sign In</button>
+            <div className='cursor-pointer border border-gray-300 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
+            hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Sign In</div>
             </Link>
             
         </div>
