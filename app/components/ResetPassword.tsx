@@ -10,7 +10,7 @@ export function ResetPassword({open,onclose}){
                 className="fixed inset-0 z-50 flex items-center justify-center"
                 onClick={onclose}
             >
-                <div className="absolute inset-0 bg-slate-500 opacity-60" />
+                <div className="absolute inset-0 bg-gray-900 opacity-60" />
                 <div
                     className="bg-white rounded-lg shadow relative px-10 py-10 w-100 flex flex-col gap-2 bg-linear-to-b from-brand-orange to-slate-900"
                     onClick={e => e.stopPropagation()}
