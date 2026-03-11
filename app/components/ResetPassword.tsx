@@ -14,15 +14,16 @@ export function ResetPassword({open,onclose}){
                 <div
                     className="bg-white rounded-lg shadow relative px-10 py-10 w-100 flex flex-col gap-2 bg-linear-to-b from-brand-orange to-slate-900"
                     onClick={e => e.stopPropagation()}
-                >
+                >  <p className='font-medium items-center flex justify-center text-2xl text-gray-300'>Reset Password</p>
                     <span className="flex justify-end cursor-pointer" onClick={onclose}>
-                        <div className="hover:bg-red-600 p-1 rounded transition duration-150"><CrossIcon /></div>
+                        <div className="hover:bg-white p-1 rounded transition duration-150"><CrossIcon /></div>
                     </span>
                     <Input placeholder='Email' className='w-full'></Input>
+                    <Input placeholder='New Password' className='w-full'></Input>
                     
 
                     <div className="flex justify-center mt-2">
-                        <Button text="Submit" />
+                        <Button text="Send OTP" />
                     </div>
                 </div>
             </div>
