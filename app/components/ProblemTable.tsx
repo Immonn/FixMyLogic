@@ -1,6 +1,6 @@
 
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { problems } from '../mockdata/problem';
 import { BsCheckCircle } from 'react-icons/bs'
@@ -24,6 +24,13 @@ const ProblemTable:React.FC<ProblemTableProps> = () => {
         setYoutubePlayer({ isOpen: false, videoId: "" });
     };
 
+    useEffect(()=>{
+        const handleEsc=(e:KeyboardEvent) =>{
+            if (e.key==="Escape"){closeModal()}
+        }
+        window.addEventListener("keydown",handleEsc)
+        return () => window.removeEventListener("keydown",handleEsc)
+    },[])
     return <>
         <tbody className='text-white'>
             {problems.map((doc,idx)=>{
