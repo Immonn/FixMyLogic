@@ -46,7 +46,7 @@ const SignInPage = () => {
                 setFormError("Registration failed. Please try again.");
                 return;
             }
-            router.push("/")
+            router.push("/dashboard")
             
         }
         catch(error:any){
