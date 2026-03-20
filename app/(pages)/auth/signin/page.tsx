@@ -3,7 +3,7 @@ import React, { useState,useRef } from 'react';
 import Navbar from "@/app/components/SigninNavbar"
 import { Input } from '@/app/components/Input';
 import { Button } from '@/app/components/Button';
-import { ResetPassword } from '@/app/components/ResetPassword';
+import ResetPassword from '@/app/components/ResetPassword';
 import {auth} from "@/app/firebase/firebase";
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';

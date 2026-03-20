@@ -1,32 +1,76 @@
-import { Input } from '@/app/components/Input';
-import { Button } from '@/app/components/Button';
-import { CrossIcon } from '../icons/Close';
+'use client'
+import { auth } from "@/app/firebase/firebase";
+import React, { useState, useEffect } from "react";
+import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 
-//@ts-ignore
-export function ResetPassword({open,onclose}){
-    return  <div>
-        {open && (
-            <div
-                className="fixed inset-0 z-50 flex items-center justify-center"
-                onClick={onclose}
-            >
-                <div className="absolute inset-0 bg-gray-900 opacity-60" />
-                <div
-                    className="bg-white rounded-lg shadow relative px-10 py-10 w-100 flex flex-col gap-2 bg-linear-to-b from-brand-orange to-slate-900"
-                    onClick={e => e.stopPropagation()}
-                >  <p className='font-medium items-center flex justify-center text-2xl text-gray-300'>Reset Password</p>
-                    <span className="flex justify-end cursor-pointer" onClick={onclose}>
-                        <div className="hover:bg-white p-1 rounded transition duration-150"><CrossIcon /></div>
-                    </span>
-                    <Input placeholder='Email' className='w-full'></Input>
-                    <Input placeholder='New Password' className='w-full'></Input>
-                    
+type ResetPasswordProps = {
+	open?: boolean;
+	onclose?: () => void;
+};
 
-                    <div className="flex justify-center mt-2">
-                        <Button text="Send OTP" />
-                    </div>
-                </div>
-            </div>
-        )}
-    </div>
-}
+const ResetPassword: React.FC<ResetPasswordProps> = ({ open = false, onclose }) => {
+	const [email, setEmail] = useState("");
+	const [sendPasswordResetEmail, sending, error] = useSendPasswordResetEmail(auth);
+	const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const success = await sendPasswordResetEmail(email);
+		if (success) {
+			toast.success("Password reset email sent", { position: "top-center", autoClose: 3000, theme: "dark" });
+			setEmail("");
+			if (onclose) onclose();
+		}
+	};
+
+	useEffect(() => {
+		if (error) {
+			alert(error.message);
+		}
+	}, [error]);
+
+	if (!open) return null;
+
+	return (
+		<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+			<div className='bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 relative'>
+				<button
+					onClick={onclose}
+					className='absolute top-4 right-4 text-gray-400 hover:text-white text-2xl'
+				>
+					×
+				</button>
+				<form className='space-y-6' onSubmit={handleReset}>
+					<h3 className='text-xl font-medium text-white'>Reset Password</h3>
+					<p className='text-sm text-white'>
+						Forgotten your password? Enter your e-mail address below, and we&apos;ll send you an e-mail allowing you
+						to reset it.
+					</p>
+					<div>
+						<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
+							Your email
+						</label>
+						<input
+							type='email'
+							name='email'
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							id='email'
+							className='border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white'
+							placeholder='name@company.com'
+						/>
+					</div>
+
+					<button
+						type='submit'
+						disabled={sending}
+						className={`w-full text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center 
+                bg-brand-orange hover:bg-brand-orange-s disabled:opacity-50`}
+					>
+						{sending ? "Sending..." : "Reset Password"}
+					</button>
+				</form>
+			</div>
+		</div>
+	);
+};
+export default ResetPassword;
