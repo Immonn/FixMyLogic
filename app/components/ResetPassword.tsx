@@ -42,8 +42,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ open = false, onclose }) 
 				<form className='space-y-6' onSubmit={handleReset}>
 					<h3 className='text-xl font-medium text-white'>Reset Password</h3>
 					<p className='text-sm text-white'>
-						Forgotten your password? Enter your e-mail address below, and we&apos;ll send you an e-mail allowing you
-						to reset it.
+						Enter your e-mail address below, and we&apos;ll send you an e-mail allowing you
+						to reset it. Check your <span className='text-red-500'>SPAM</span> folder.
 					</p>
 					<div>
 						<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
