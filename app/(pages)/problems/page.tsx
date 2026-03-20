@@ -7,7 +7,7 @@ export default function Problem(){
     <div className="shrink-0">
         <ProblemNavBar/>
     </div>
-    <div className="flex-1 min-h-0">
+    <div className="flex-1 min-h-0 bg-linear-to-b from-gray-700 to-black">
         <Workflow/>
     </div>
     </div>

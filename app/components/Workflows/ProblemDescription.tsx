@@ -6,10 +6,10 @@ type ProblemDescriptionProps = {};
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
 	return (
-		<div className='bg-dark-layer-1 h-full border-r border-dark-divider-border-2'>
+		<div className='bg-dark-layer-1 h-full border-r border-dark-divider-border-2 text-dark-gray-8'>
 			{/* TAB */}
-			<div className='flex h-11 w-full items-center pt-2 bg-dark-layer-2 text-white overflow-x-hidden'>
-				<div className='bg-dark-layer-1 rounded-t-[5px] px-5 py-2.5 text-xs cursor-pointer'>
+			<div className='flex h-11 w-full items-center pt-2 bg-dark-layer-2 text-white overflow-x-hidden border-b border-dark-divider-border-2'>
+				<div className='bg-dark-layer-1 rounded-t-[5px] px-5 py-2.5 text-xs cursor-pointer border border-dark-divider-border-2 border-b-0'>
 					Description
 				</div>
 			</div>

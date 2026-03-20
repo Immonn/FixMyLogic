@@ -57,7 +57,7 @@ body {
 	background-position: 50%;
 }
 .gutter:hover {
-	background-color: #0a84ff;
+	background-color: var(--color-brand-orange-s);
 }
 
 .gutter.gutter-horizontal {
