@@ -16,7 +16,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ open = false, onclose }) 
 		e.preventDefault();
 		const success = await sendPasswordResetEmail(email);
 		if (success) {
-			toast.success("Password reset email sent", { position: "top-center", autoClose: 3000, theme: "dark" });
+			toast.success("Password reset email sent");
 			setEmail("");
 			if (onclose) onclose();
 		}
