@@ -1,6 +1,10 @@
-import ProblemInterface from "@/app/components/ProblemInterface";
+import ProblemNavBar from "@/app/components/ProblemNavbar";
+import Workflow from "@/app/components/Workflows/Workflow";
 
 
 export default function Problem(){
-    return <ProblemInterface/>
+    return <>
+    <ProblemNavBar/>
+    <Workflow/>
+    </>
 }
