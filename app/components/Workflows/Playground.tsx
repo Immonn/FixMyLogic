@@ -64,13 +64,13 @@ const Playground:React.FC<PlaygroundProps> = () => {
                         </div>
                     </div>
                 </div>
-                <div className="font-semibold my-4">
+                <div className="font-semibold my-4 min-w-0">
                     <p className='text-sm font-medium mt-4  text-white'>Input : </p>
-                    <div className='w-full cursor-text rounded-lg border px-3 py-10px bg-dark-fill-3 border-tarnsparent text-white mt-2'>
+                    <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
                         nums : [2,7,11,15] , target : 9
                     </div>
                     <p className='text-sm font-medium mt-4  text-white'>Output : </p>
-                    <div className='w-full cursor-text rounded-lg border px-3 py-10px bg-dark-fill-3 border-tarnsparent text-white mt-2'>
+                    <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
                         [0,1]
                     </div>
                 </div>

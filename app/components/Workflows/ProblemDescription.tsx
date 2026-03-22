@@ -1,12 +1,15 @@
+import { Problem } from "@/app/utils/types";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 
-type ProblemDescriptionProps = {};
+type ProblemDescriptionProps = {
+	problem: Problem;
+};
 
-const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
+const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 	return (
-		<div className='bg-dark-layer-1 h-full border-r border-dark-divider-border-2 text-dark-gray-8'>
+		<div className='bg-dark-layer-1 h-full min-w-0 border-r border-dark-divider-border-2 text-dark-gray-8'>
 			{/* TAB */}
 			<div className='flex h-11 w-full items-center pt-2 bg-dark-layer-2 text-white overflow-x-hidden border-b border-dark-divider-border-2'>
 				<div className='bg-dark-layer-1 rounded-t-[5px] px-5 py-2.5 text-xs cursor-pointer border border-dark-divider-border-2 border-b-0'>
@@ -14,12 +17,12 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
 				</div>
 			</div>
 
-			<div className='flex px-0 py-4 h-[calc(100%-44px)] overflow-y-auto'>
-				<div className='px-5 pb-6'>
+			<div className='flex px-0 py-4 h-[calc(100%-44px)] min-w-0 overflow-y-auto overflow-x-hidden'>
+				<div className='px-5 pb-6 pr-6 w-full min-w-0'>
 					{/* Problem heading */}
 					<div className='w-full'>
 						<div className='flex space-x-4'>
-							<div className='flex-1 mr-2 text-lg text-white font-medium'>1. Two Sum</div>
+							<div className='flex-1 mr-2 text-lg text-white font-medium'>{problem?.title}</div>
 						</div>
 						<div className='flex items-center mt-3'>
 							<div
@@ -44,76 +47,37 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
 						</div>
 
 						{/* Problem Statement(paragraphs) */}
-						<div className='text-white text-sm'>
-							<p className='mt-3'>
-								Given an array of integers <code>nums</code> and an integer <code>target</code>, return
-								<em>indices of the two numbers such that they add up to</em> <code>target</code>.
-							</p>
-							<p className='mt-3'>
-								You may assume that each input would have <strong>exactly one solution</strong>, and you
-								may not use thesame element twice.
-							</p>
-							<p className='mt-3'>You can return the answer in any order.</p>
+						<div className='text-white text-sm wrap-break-word'>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: problem.problemStatement,
+								}}
+							/>
 						</div>
 
-						{/* Examples */}
-						<div className='mt-4'>
-							{/* Example 1 */}
-							<div>
-								<p className='font-medium text-white '>Example 1: </p>
-								<div className='example-card'>
-									<pre>
-										<strong className='text-white'>Input: </strong> nums = [2,7,11,15], target = 9{" "}
-										<br />
-										<strong>Output:</strong> [0,1] <br />
-										<strong>Explanation:</strong>Because nums[0] + nums[1] == 9, we return [0, 1].
-									</pre>
+					
+						<div className='mt-6 space-y-5 min-w-0 '>
+							{problem.examples.map((example, index) => (
+								<div key={example.id}>
+									<p className='font-medium text-white mt-2'>Example {index + 1}: </p>
+									{example.img && <img src={example.img} alt={`example-${index + 1}`} className='mt-2 rounded-md border max-w-full h-auto' />}
+									<div className='example-card min-w-0 overflow-x-hidden mt-2'>
+										<div className='space-y-1 whitespace-pre-wrap wrap-break-word' style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+											<p className='flex flex-wrap items-baseline'><strong className='text-white'>Input:</strong><span className='ml-2'>{example.inputText}</span></p>
+											<p className='flex flex-wrap items-baseline'><strong>Output:</strong><span className='ml-2'>{example.outputText}</span></p>
+											{example.explanation && (
+												<p className='flex flex-wrap items-baseline'><strong>Explanation:</strong><span className='ml-2'>{example.explanation}</span></p>
+											)}
+										</div>
+									</div>
 								</div>
-							</div>
-
-							{/* Example 2 */}
-							<div>
-								<p className='font-medium text-white '>Example 2: </p>
-								<div className='example-card'>
-									<pre>
-										<strong className='text-white'>Input: </strong> nums = [3,2,4], target = 6{" "}
-										<br />
-										<strong>Output:</strong> [1,2] <br />
-										<strong>Explanation:</strong>Because nums[1] + nums[2] == 6, we return [1, 2].
-									</pre>
-								</div>
-							</div>
-							{/* Example 3 */}
-							<div>
-								<p className='font-medium text-white '>Example 3: </p>
-								<div className='example-card'>
-									<pre>
-										<strong className='text-white'>Input: </strong> nums = [3,3], target = 6
-										<br />
-										<strong>Output:</strong> [0,1] <br />
-									</pre>
-								</div>
-							</div>
+							))}
 						</div>
 
 						{/* Constraints */}
 						<div className='my-5'>
 							<div className='text-white text-sm font-medium'>Constraints:</div>
-							<ul className='text-white ml-5 list-disc'>
-								<li className='mt-2'>
-									<code>2 ≤ nums.length ≤ 10</code>
-								</li>
-
-								<li className='mt-2'>
-									<code>-10 ≤ nums[i] ≤ 10</code>
-								</li>
-								<li className='mt-2'>
-									<code>-10 ≤ target ≤ 10</code>
-								</li>
-								<li className='mt-2 text-sm'>
-									<strong>Only one valid answer exists.</strong>
-								</li>
-							</ul>
+							<ul className='text-white ml-5 list-disc wrap-break-word' dangerouslySetInnerHTML={{ __html: problem.constraints }} />
 						</div>
 						<div className='h-10' />
 					</div>

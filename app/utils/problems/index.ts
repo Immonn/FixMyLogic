@@ -1,3 +1,5 @@
+//We are implemented this to make problem render at server side.
+
 import { Problem } from "../types";
 import { jumpGame } from "./jump-game";
 import { reverseLinkedList } from "./reverse-linked-list";
@@ -15,4 +17,4 @@ export const problems: ProblemMap = {
 	"jump-game": jumpGame,
 	"search-a-2d-matrix": search2DMatrix,
 	"valid-parentheses": validParentheses,
-};'../types'
+};
