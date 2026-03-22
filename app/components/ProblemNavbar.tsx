@@ -14,7 +14,7 @@ type NavbarProps = {
 
 const ProblemNavBar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
-    return <div className='relative h-20 min-h-20 w-full bg-linear-to-b from-gray-600 to-black'>
+    return <div className='relative z-40 h-20 min-h-20 w-full bg-linear-to-b from-gray-600 to-black'>
         <div className='absolute left-2 sm:left-12 md:left-24 top-1/2 -translate-y-1/2 h-full flex pointer-events-none select-none items-center justify-center'>
             <img src="/logo.png" alt='FixMyLogic' className='h-16 w-auto object-contain' />
         </div>
@@ -50,11 +50,10 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
                     <div className='cursor-pointer group relative w-full h-full'>
                         <img src='/avatar.png' alt='Avatar' className='rounded-full w-full h-full object-cover' />
                         <div
-                            className='absolute top-10 left-2/4 -translate-x-2/4  mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg 
-							z-40 group-hover:scale-100 scale-0 
-							transition-all duration-300 ease-in-out'
+                            className='absolute right-0 top-10 mt-2 origin-top-right rounded bg-dark-layer-1 p-2 text-brand-orange shadow-lg 
+							z-50 scale-0 group-hover:scale-100 transition-all duration-300 ease-in-out'
                         >
-                            <p className='text-sm'>{user.email}</p>
+                            <p className='max-w-60 text-sm whitespace-nowrap'>{user.email}</p>
                         </div>
                     </div>
                 ) : (
