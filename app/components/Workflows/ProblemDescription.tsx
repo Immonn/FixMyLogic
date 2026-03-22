@@ -23,7 +23,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
 						</div>
 						<div className='flex items-center mt-3'>
 							<div
-								className={`text-olive bg-olive inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}
+								className={`text-white bg-olive inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}
 							>
 								Easy
 							</div>
