@@ -7,7 +7,7 @@ type EditorFooterProps = {
 
 const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmit }) => {
 	return (
-		<div className='sticky bottom-0 z-20 w-full border-t border-dark-divider-border-2 bg-dark-layer-1'>
+		<div className='z-20 w-full shrink-0 border-t border-dark-divider-border-2 bg-dark-layer-1'>
 			<div className='my-2.5 flex w-full items-center justify-between px-5'>
 				<div className='mr-2 flex min-w-0 flex-1 flex-nowrap items-center space-x-4'>
 					<button className='px-3 py-1.5 font-medium items-center transition-all inline-flex bg-dark-fill-3 text-sm hover:bg-dark-fill-2 text-dark-label-2 rounded-lg pl-3 pr-2'>

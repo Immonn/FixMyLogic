@@ -1,8 +1,10 @@
 'use client'
 import React from 'react';
-import Split from 'react-split';
+import dynamic from 'next/dynamic';
 import ProblemDescription from './ProblemDescription';
 import Playground from './Playground';
+
+const Split = dynamic(() => import('react-split'), { ssr: false });
 
 type WorkflowProps = {
     
@@ -14,7 +16,7 @@ const Workflow:React.FC<WorkflowProps> = () => {
         <div className='h-full overflow-auto'>
             <ProblemDescription/>
         </div>
-        <div className='h-full overflow-auto'>
+        <div className='h-full overflow-hidden'>
             <Playground/>
         </div>
 

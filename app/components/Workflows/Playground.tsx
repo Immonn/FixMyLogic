@@ -1,29 +1,35 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import PrefenceNav from './preferenceNav';
-import Split from 'react-split';
+import dynamic from 'next/dynamic';
 import CodeMirror from '@uiw/react-codemirror'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import EditorFooter from './Editorfooter';
+
+const Split = dynamic(() => import('react-split'), { ssr: false });
 
 type PlaygroundProps = {
     
 };
 
 const Playground:React.FC<PlaygroundProps> = () => {
-    return <div className='h-full overflow-auto bg-dark-layer-1 text-dark-gray-8'>
+    const boilerplate=`function twoSum(nums,target){
+    //Write your code here
+};`;
+    return <div className='flex h-full min-h-0 flex-col overflow-hidden bg-dark-layer-1 text-dark-gray-8'>
         <PrefenceNav/>
-        <Split className="h-[calc(100vh-94px)]" direction='vertical' sizes={[60,40]} minSize={60}>
-            <div className="w-full overflow-auto">
+        <Split className="min-h-0 flex-1" direction='vertical' sizes={[50,50]} minSize={50}>
+            <div className="min-h-0 w-full overflow-hidden">
                 <CodeMirror
-                value='const a=1;'
+                value={boilerplate}
                 theme={vscodeDark}
                 extensions={[javascript()]}
-                style={{fontSize:16}}
+                height='100%'
+                style={{fontSize:16, height:'100%'}}
                 />
             </div>
-            <div className='w-full px-5 overflow-auto'>
+            <div className='min-h-0 w-full overflow-auto px-5 pb-4'>
                 {/* TestCases Heading */}
                 <div className='flex h-10 items-center space-x-6'>
                     <div className='relative flex h-full flex-col justify-center cursor-pointer'>
