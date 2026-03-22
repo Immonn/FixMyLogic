@@ -14,10 +14,13 @@ type NavbarProps = {
 
 const ProblemNavBar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
+
     return <div className='relative z-40 h-14 min-h-14 w-full bg-dark-layer-1'>
-        <div className='absolute left-2 sm:left-12 md:left-24 top-1/2 -translate-y-1/2 h-full flex pointer-events-none select-none items-center justify-center'>
+        <Link href={"/patternwise"}>
+        <div className='absolute left-2 sm:left-12 md:left-24 top-1/2 -translate-y-1/2 h-full flex items-center justify-center'>
             <img src="/logo.png" alt='FixMyLogic' className='h-10 w-auto object-contain' />
         </div>
+        </Link>
 
         <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
             <div className='flex items-center gap-4 pointer-events-auto'>
