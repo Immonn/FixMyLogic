@@ -1,7 +1,10 @@
+
 import DashboardNavbar from "@/app/components/DashboardNavbar";
 import ProblemTable from "@/app/components/ProblemTable";
 
+
 export default function Patternwise() {
+
     return (
         <div className="bg-linear-to-b from-gray-600 to-black min-h-screen relative">
             <div className="max-w-7xl mx-auto">
@@ -33,6 +36,7 @@ export default function Patternwise() {
                         <ProblemTable />
                     </table>
                 </div>
+                
             </main>
         </div>
     );
