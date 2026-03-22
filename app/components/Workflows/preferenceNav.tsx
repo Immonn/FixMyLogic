@@ -53,7 +53,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = () => {
         return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, []);
     
-    return <div className='h-11 flex items-center px-4 justify-between border-b border-dark-divider-border-2 text-sm'>
+    return <div className='sticky top-0 z-30 h-11 flex items-center px-4 justify-between border-b border-dark-divider-border-2 text-sm bg-dark-layer-2'>
                 <div className='relative w-30' ref={dropdownRef}>
                     <button
                         type='button'
