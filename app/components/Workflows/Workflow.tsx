@@ -18,7 +18,7 @@ const Workflow:React.FC<WorkflowProps> = ({problem}) => {
             <ProblemDescription problem={problem}/>
         </div>
         <div className='h-full min-w-0 overflow-hidden'>
-            <Playground/>
+            <Playground problem={problem}/>
         </div>
 
     </Split>

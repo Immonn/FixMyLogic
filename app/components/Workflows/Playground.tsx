@@ -6,23 +6,22 @@ import CodeMirror from '@uiw/react-codemirror'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import EditorFooter from './Editorfooter';
+import { Problem } from '@/app/utils/types';
 
 const Split = dynamic(() => import('react-split'), { ssr: false });
 
 type PlaygroundProps = {
-    
+   problem:Problem 
 };
 
-const Playground:React.FC<PlaygroundProps> = () => {
-    const boilerplate=`function twoSum(nums,target){
-    //Write your code here
-};`;
+const Playground:React.FC<PlaygroundProps> = ({problem}) => {
+    const [activeTestCaseId,setActiveCaseId]=useState<number>(0);
     return <div className='flex h-full min-h-0 flex-col overflow-hidden bg-dark-layer-1 text-dark-gray-8'>
         <PrefenceNav/>
-        <Split className="min-h-0 flex-1" direction='vertical' sizes={[50,50]} minSize={50}>
+        <Split className="min-h-0 flex-1" direction='vertical' sizes={[60,40]} minSize={60}>
             <div className="min-h-0 w-full overflow-hidden">
                 <CodeMirror
-                value={boilerplate}
+                value={problem.starterCode}
                 theme={vscodeDark}
                 extensions={[javascript()]}
                 height='100%'
@@ -38,40 +37,27 @@ const Playground:React.FC<PlaygroundProps> = () => {
                     </div> 
                 </div>
                 <div className="flex">
-                    {/* case 1 */}
-                    <div className="mr-2 items-start mt-2 text-white">
+                    {problem.examples.map((example,index) => (
+                    <div className="mr-2 items-start mt-2 text-white" key={example.id}
+                    onClick={() => setActiveCaseId(index)}>
                         <div className="flex flex-wrap items-center gap-y-4">
                             <div className="font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3
                             hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap">
-                                Case 1
+                                Case {index + 1}
                             </div>
                         </div>
                     </div>
-                    <div className="mr-2 items-start mt-2 text-white">
-                        <div className="flex flex-wrap items-center gap-y-4">
-                            <div className="font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3
-                            hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap">
-                                Case 2
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mr-2 items-start mt-2 text-white">
-                        <div className="flex flex-wrap items-center gap-y-4">
-                            <div className="font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3
-                            hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap">
-                                Case 3
-                            </div>
-                        </div>
-                    </div>
+                    ))}
+                    
                 </div>
                 <div className="font-semibold my-4 min-w-0">
                     <p className='text-sm font-medium mt-4  text-white'>Input : </p>
                     <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
-                        nums : [2,7,11,15] , target : 9
+                        {problem.examples[activeTestCaseId].inputText}
                     </div>
                     <p className='text-sm font-medium mt-4  text-white'>Output : </p>
                     <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
-                        [0,1]
+                        {problem.examples[activeTestCaseId].outputText}
                     </div>
                 </div>
             </div>
