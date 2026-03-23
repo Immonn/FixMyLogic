@@ -2,12 +2,16 @@ import { Problem } from "@/app/utils/types";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
+import { useGetCurrentProblem } from "@/app/hooks/useGetCurrentProblem";
+import RectangleSkeleton from "../Skeletons/RectangleSkeleton";
+import CircleSkeleton from "../Skeletons/CircleSkeleton";
 
 type ProblemDescriptionProps = {
 	problem: Problem;
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
+	const { currentProblem, loading, problemDifficulty } = useGetCurrentProblem(problem.id);
 	return (
 		<div className='bg-dark-layer-1 h-full min-w-0 border-r border-dark-divider-border-2 text-dark-gray-8'>
 			{/* TAB */}
@@ -24,27 +28,39 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 						<div className='flex space-x-4'>
 							<div className='flex-1 mr-2 text-lg text-white font-medium'>{problem?.title}</div>
 						</div>
-						<div className='flex items-center mt-3'>
-							<div
-								className={`text-white bg-olive inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}
-							>
-								Easy
+						{!loading && currentProblem && (
+							<div className='flex items-center mt-3'>
+
+								<div
+									className={`${problemDifficulty} inline-block rounded-[21px] px-2.5 py-1 text-xs font-medium capitalize `}
+								>
+									{currentProblem.difficulty}
+								</div>
+								<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
+									<BsCheck2Circle />
+								</div>
+								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
+									<AiFillLike />
+									<span className='text-xs'>{currentProblem.likes}</span>
+								</div>
+								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
+									<AiFillDislike />
+									<span className='text-xs'>{currentProblem.dislikes}</span>
+								</div>
+								<div className='cursor-pointer hover:bg-dark-fill-3  rounded p-0.75  ml-4 text-xl transition-colors duration-200 text-dark-gray-6 '>
+									<TiStarOutline />
+								</div>
 							</div>
-							<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
-								<BsCheck2Circle />
+						)}
+						{loading && (
+							<div className="mt-3 flex space-x-2">
+								<RectangleSkeleton/>
+								<CircleSkeleton/>
+								<RectangleSkeleton/>
+								<RectangleSkeleton/>
+								<CircleSkeleton/>
 							</div>
-							<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-								<AiFillLike />
-								<span className='text-xs'>120</span>
-							</div>
-							<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-								<AiFillDislike />
-								<span className='text-xs'>2</span>
-							</div>
-							<div className='cursor-pointer hover:bg-dark-fill-3  rounded p-0.75  ml-4 text-xl transition-colors duration-200 text-dark-gray-6 '>
-								<TiStarOutline />
-							</div>
-						</div>
+						)}
 
 						{/* Problem Statement(paragraphs) */}
 						<div className='text-white text-sm wrap-break-word'>
@@ -55,7 +71,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 							/>
 						</div>
 
-					
+
 						<div className='mt-6 space-y-5 min-w-0 '>
 							{problem.examples.map((example, index) => (
 								<div key={example.id}>
