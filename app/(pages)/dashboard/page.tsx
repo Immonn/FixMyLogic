@@ -25,7 +25,7 @@ const LandingPage = () => {
                             Welcome back, <span className="text-brand-orange">Coder</span>
                         </h1>
                         <p className="text-lg text-dark-gray-7 max-w-2xl font-medium">
-                            Pick up where you left off or start a new learning path. Consistency is the key to mastery.
+                            Pick up where you left off or start a new learning path.
                         </p>
                     </div>
                 </div>
