@@ -6,6 +6,9 @@ import { auth } from '../firebase/firebase';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BsList } from 'react-icons/bs';
 import Timer from './Timer';
+import { useParams, useRouter } from "next/navigation";
+import { problems } from '../utils/problems';
+import { Problem } from '../utils/types';
 
 
 type NavbarProps = {
@@ -14,6 +17,28 @@ type NavbarProps = {
 
 const ProblemNavBar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
+    const router = useRouter();
+    const params = useParams();
+
+    const handleProblemChange = (isForward: boolean) => {
+        const order = problems[params.pid as string]?.order;
+        if (order === undefined) return;
+        
+        const direction = isForward ? 1 : -1;
+        const nextProblemOrder = order + direction;
+        const nextProblemKey = Object.keys(problems).find((key) => problems[key].order === nextProblemOrder);
+        
+        if (isForward && !nextProblemKey) {
+            const firstProblemKey = Object.keys(problems).find((key) => problems[key].order === 1) || Object.keys(problems)[0];
+            router.push(`/problems/${firstProblemKey}`);
+        } else if (!isForward && !nextProblemKey) {
+            const lastProblemOrder = Object.keys(problems).length;
+            const lastProblemKey = Object.keys(problems).find((key) => problems[key].order === lastProblemOrder) || Object.keys(problems)[Object.keys(problems).length - 1];
+            router.push(`/problems/${lastProblemKey}`);
+        } else if (nextProblemKey) {
+            router.push(`/problems/${nextProblemKey}`);
+        }
+    }
 
     return <div className='relative z-40 h-14 min-h-14 w-full bg-dark-layer-1'>
         <Link href={"/patternwise"}>
@@ -24,7 +49,8 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
 
         <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
             <div className='flex items-center gap-4 pointer-events-auto'>
-                <div className='flex bg-white items-center justify-center rounded dark-fill-3 hover:text-brand-orange h-8 w-8 cursor-pointer'>
+                <div className='flex bg-white items-center justify-center rounded dark-fill-3 hover:text-brand-orange h-8 w-8 cursor-pointer'
+                onClick={()=>handleProblemChange(false)}>
                     <FaChevronLeft/>
                 </div>
                 <Link href={"/patternwise"} className='flex items-center gap-2 font-medium max-w-42.5 text-dark-gray-8 cursor-pointer hover:text-brand-orange'>
@@ -34,7 +60,8 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
                 <p>Problem List</p>
                
                 </Link>
-                <div className='flex items-center justify-center rounded bg-white hover:text-brand-orange h-8 w-8 cursor-pointer'>
+                <div className='flex items-center justify-center rounded bg-white hover:text-brand-orange h-8 w-8 cursor-pointer'
+                onClick={()=>handleProblemChange(true)}>
                     <FaChevronRight/>
                 </div>
             </div>
