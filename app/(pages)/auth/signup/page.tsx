@@ -4,8 +4,11 @@ import Navbar from "@/app/components/SignupNavbar"
 import { Input } from '@/app/components/Input';
 import { Button } from '@/app/components/Button';
 import {auth} from "@/app/firebase/firebase";
+import { firestore } from '@/app/firebase/firebase';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
+import { setDoc,doc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 type SignupPageProps = {
 
@@ -29,6 +32,7 @@ const SignupPage: React.FC<SignupPageProps> = () => {
         setFormError("");
         const email=emailref.current?.value.trim();
         const password=passwordref.current?.value.trim();
+        const username=usernameref.current?.value.trim();
 
         if (!email || !password) {
             setFormError("Email and password are required.");
@@ -44,15 +48,30 @@ const SignupPage: React.FC<SignupPageProps> = () => {
         }
 
         try{
+            toast.loading("Creating Account...",{position:"top-center",toastId:"loadingToast"})
             const newUser=await createUserWithEmailAndPassword(email,password)
             if (!newUser){
                 setFormError("Registration failed. Please try again.");
                 return;
             }
+            const userData={
+                uid:newUser.user.uid,
+                email:newUser.user.email,
+                createdAt:Date.now(),
+                updatedAt:Date.now(),
+                likedProblems:[],
+                dislikedProblems:[],
+                solvedProblems:[],
+                starredProblems:[],
+                displayName:username
+            }
+            await setDoc(doc(firestore,"users",newUser.user.uid),userData)
             router.push("/auth/signin")
         }
         catch(error:any){
-            setFormError(error.message);
+            toast.error(error.message,{position:"top-center"})
+        }finally{
+            toast.dismiss("loadingToast")
         }
     }
     return <div className='bg-linear-to-b from-gray-600 to-black h-screen relative'>
