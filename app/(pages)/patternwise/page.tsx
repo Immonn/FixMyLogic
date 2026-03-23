@@ -1,9 +1,11 @@
-
+'use client'
+import { useState } from "react";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
 import ProblemTable from "@/app/components/ProblemTable";
 
 
 export default function Patternwise() {
+    const [loadingProblems,setLoadingProblems]=useState(true);
 
     return (
         <div className="bg-linear-to-b from-gray-600 to-black min-h-screen relative">
@@ -33,10 +35,10 @@ export default function Patternwise() {
                                 </th>
                             </tr>
                         </thead>
-                        <ProblemTable />
+                        <ProblemTable setLoadingProblems={setLoadingProblems} loadingProblems={loadingProblems} />
                     </table>
                 </div>
-                
+
             </main>
         </div>
     );

@@ -2,19 +2,21 @@
 'use client'
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { problems } from '../mockdata/problem';
 import { BsCheckCircle } from 'react-icons/bs'
 import { AiFillYoutube } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
 import YouTube from 'react-youtube';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useGetProblems } from '../hooks/useGetProblem';
 
 type ProblemTableProps = {
-    
+    setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+    loadingProblems: boolean;
 };
 
-const ProblemTable:React.FC<ProblemTableProps> = () => {
+const ProblemTable:React.FC<ProblemTableProps> = ({ setLoadingProblems, loadingProblems }) => {
+    const problems=useGetProblems(setLoadingProblems);
     const [youtubePlayer,setYoutubePlayer]=useState({
         isOpen:false,
         videoId:""
@@ -33,7 +35,27 @@ const ProblemTable:React.FC<ProblemTableProps> = () => {
     },[])
     return <>
         <tbody className='text-white'>
-            {problems.map((doc,idx)=>{
+            {loadingProblems && Array.from({ length: 6 }).map((_, idx) => (
+                <tr key={`skeleton-${idx}`} className='animate-pulse'>
+                    <td className='px-6 py-4'>
+                        <div className='w-6 h-6 rounded-full bg-white/35'></div>
+                    </td>
+                    <td className='px-6 py-4'>
+                        <div className='h-4 w-40 rounded-full bg-white/35'></div>
+                    </td>
+                    <td className='px-6 py-4'>
+                        <div className='h-4 w-28 rounded-full bg-white/35'></div>
+                    </td>
+                    <td className='px-6 py-4'>
+                        <div className='h-4 w-36 rounded-full bg-white/35'></div>
+                    </td>
+                    <td className='px-6 py-4'>
+                        <div className='h-4 w-20 rounded-full bg-white/35'></div>
+                    </td>
+                </tr>
+            ))}
+
+            {!loadingProblems && problems.map((doc,idx)=>{
                 const difficultyColor=doc.difficulty==="Easy" ? 'text-dark-green-s' : doc.difficulty==="Medium" ? "text-yellow-500" : "text-red-500";
                 return <tr className={`${idx %2==1 ? 'bg-dark-layer-1':''}`} key={doc.id}>
                     <td className='px-6 py-4 font-medium whitespace-nowrap text-dark-green-s'>
