@@ -2,10 +2,10 @@ import React from "react";
 import { BsChevronUp } from "react-icons/bs";
 
 type EditorFooterProps = {
-	handleSubmit?: () => void;
+	handleSubmission?: () => void;
 };
 
-const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmit }) => {
+const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmission }) => {
 	return (
 		<div className='z-20 w-full shrink-0 border-t border-dark-divider-border-2 bg-dark-layer-1'>
 			<div className='my-2.5 flex w-full items-center justify-between px-5'>
@@ -20,13 +20,13 @@ const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmit }) => {
 				<div className='ml-auto flex shrink-0 items-center space-x-4'>
 					<button
 						className='px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-dark-fill-3  hover:bg-dark-fill-2 text-dark-label-2 rounded-lg'
-						onClick={handleSubmit}
+						onClick={handleSubmission}
 					>
 						Run
 					</button>
 					<button
 						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded-lg'
-						onClick={handleSubmit}
+						onClick={handleSubmission}
 					>
 						Submit
 					</button>

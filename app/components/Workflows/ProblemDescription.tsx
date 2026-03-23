@@ -13,10 +13,11 @@ import { arrayRemove, arrayUnion, doc, runTransaction, updateDoc } from "firebas
 
 type ProblemDescriptionProps = {
 	problem: Problem;
+	_solved:boolean;
 };
 
-const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
-	const {liked,disliked,solved,setData,starred}=useGetUserData(problem.id);
+const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem,_solved }) => {
+	const {liked,disliked,setData,solved,starred}=useGetUserData(problem.id);
 	const [user]=useAuthState(auth)
 	const { currentProblem, loading, problemDifficulty,setCurrentProblem } = useGetCurrentProblem(problem.id);
 	
@@ -143,9 +144,11 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 								>
 									{currentProblem.difficulty}
 								</div>
-								<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
+								{(solved || _solved) && (
+									<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
 									<BsCheck2Circle />
 								</div>
+								)}
 								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'
 								onClick={handleLike}>
 									{liked && <AiFillLike style={{ color: "var(--color-dark-blue-s)" }} />}
