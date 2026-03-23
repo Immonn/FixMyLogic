@@ -9,6 +9,7 @@ import YouTube from 'react-youtube';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useGetProblems } from '../hooks/useGetProblem';
+import { useGetSolvedProblems } from '../hooks/useGetSolvedProblems';
 
 type ProblemTableProps = {
     setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +18,7 @@ type ProblemTableProps = {
 const ProblemTable:React.FC<ProblemTableProps> = ({setLoadingProblems}) => {
 
     const problems=useGetProblems(setLoadingProblems);
+    const solvedProblems=useGetSolvedProblems();
     const [youtubePlayer,setYoutubePlayer]=useState({
         isOpen:false,
         videoId:""
@@ -39,7 +41,7 @@ const ProblemTable:React.FC<ProblemTableProps> = ({setLoadingProblems}) => {
                 const difficultyColor=doc.difficulty==="Easy" ? 'text-dark-green-s' : doc.difficulty==="Medium" ? "text-yellow-500" : "text-red-500";
                 return <tr className={`${idx %2==1 ? 'bg-dark-layer-1':''}`} key={doc.id}>
                     <td className='px-6 py-4 font-medium whitespace-nowrap text-dark-green-s'>
-                        <BsCheckCircle fontSize={"18"} width={"18"}/>
+                        {solvedProblems.includes(doc.id) && <BsCheckCircle fontSize={"18"} width={"18"}/>}
                     </td>
                     <td className='px-6 py-4'>
                         <Link className='hover:text-blue-600 cursor-pointer' href={`/problems/${doc.id}`}>
