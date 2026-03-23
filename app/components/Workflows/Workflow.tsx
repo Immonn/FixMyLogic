@@ -7,6 +7,8 @@ import { Problem } from '@/app/utils/types';
 import Confetti from 'react-confetti';
 const Split = dynamic(() => import('react-split'), { ssr: false });
 
+import { useHasMounted } from '@/app/hooks/useHasMounted';
+
 type WorkflowProps = {
     problem: Problem
 };
@@ -14,6 +16,9 @@ type WorkflowProps = {
 const Workflow: React.FC<WorkflowProps> = ({ problem }) => {
     const [success, setSuccess] = useState(false);
     const [solved,setSolved]=useState(false);
+    const hasMounted = useHasMounted();
+
+    if (!hasMounted) return null;
 
     return <Split className='split h-full ' minSize={0}>
         <div className='h-full min-w-0 overflow-auto'>

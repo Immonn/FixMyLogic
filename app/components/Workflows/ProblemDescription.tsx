@@ -144,7 +144,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem,_solved
 								>
 									{currentProblem.difficulty}
 								</div>
-								{(solved || _solved) && (
+								{(solved || _solved) && ( //We add _solved for immediate update
 									<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
 									<BsCheck2Circle />
 								</div>
