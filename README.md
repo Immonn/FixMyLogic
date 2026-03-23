@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FixMyLogic
 
-## Getting Started
+FixMyLogic is a modern, interactive coding platform inspired by top competitive programming sites, built to help users seamlessly practice algorithms and master their logical problem solving skills. It features a fully-functional embedded code execution engine, user authentication, and persistent progress tracking.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Code Execution Environment:** Write and execute JavaScript code directly in the browser safely. It dynamically tests your code against pre-defined test cases and evaluates the runtime logic.
+- **Firebase Integration:** 
+  - **Authentication:** Secure user login and registration using Firebase Auth.
+  - **Cloud Firestore:** Real-time database to track and persist user progress (Starred, Liked, Disliked, and Solved problems).
+- **Interactive UI/UX:**
+  - Modern dark-themed user interface designed to be easy on the eyes, featuring VS Code aesthetics.
+  - Interactive split-pane layouts (resizable problem descriptions and code editors) using `react-split`.
+  - Highly customizable Settings Modal (adjust editor font-sizes, full-screen modes, syntax languages).
+- **Rewarding Feedback & Learning:**
+  - Satisfying confetti animations celebrating successful code submissions.
+  - Integrated YouTube video solutions directly in the problem tables for visual learning and breakdowns.
+- **Robust Tech Stack:** Built with blazing fast React, Next.js, Tailwind CSS, TypeScript, and Firebase.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** Next.js (React)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Backend & Database:** Firebase (Authentication, Cloud Firestore)
+- **Code Editor:** `@uiw/react-codemirror` (with VSCode Dark Theme)
+- **Noteworthy Libraries:** `react-icons`, `react-toastify`, `react-split`, `react-confetti`, `react-youtube`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💻 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+Make sure you have [Node.js](https://nodejs.org/) and `npm` installed on your machine.
+You will also need to configure a Firebase project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Immonn/FixMyLogic.git
+   cd FixMyLogic
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Environment Configuration:**
+   Create a `.env.local` file in the root directory and securely add your Firebase configuration variables:
+   ```env
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) with your browser to immerse yourself in the platform.
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+Feel free to check out the [issues page](https://github.com/Immonn/FixMyLogic/issues) if you want to contribute.
+
+## 📝 License
+
+This project is open-source and available under the MIT License.
