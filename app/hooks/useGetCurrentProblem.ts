@@ -22,5 +22,5 @@ export function useGetCurrentProblem(id:string){
         }
         getCurrentProblem();
     },[id])
-    return {currentProblem,loading,problemDifficulty}
+    return {currentProblem,loading,problemDifficulty,setCurrentProblem}
 }

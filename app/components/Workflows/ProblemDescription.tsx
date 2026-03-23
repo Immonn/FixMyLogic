@@ -5,13 +5,58 @@ import { TiStarOutline } from "react-icons/ti";
 import { useGetCurrentProblem } from "@/app/hooks/useGetCurrentProblem";
 import RectangleSkeleton from "../Skeletons/RectangleSkeleton";
 import CircleSkeleton from "../Skeletons/CircleSkeleton";
+import {useGetUserData} from "@/app/hooks/useGetUserData";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, firestore } from "@/app/firebase/firebase";
+import {toast} from "react-toastify"
+import { doc, runTransaction } from "firebase/firestore";
 
 type ProblemDescriptionProps = {
 	problem: Problem;
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
-	const { currentProblem, loading, problemDifficulty } = useGetCurrentProblem(problem.id);
+	const {liked,disliked,solved,setData,starred}=useGetUserData(problem.id);
+	const [user]=useAuthState(auth)
+	const { currentProblem, loading, problemDifficulty,setCurrentProblem } = useGetCurrentProblem(problem.id);
+	async function handleLike(){
+		if (!user){
+			toast.error("You must be logged In to like this problem",{position:"top-center",theme:"dark"});
+			return 
+		}
+		//Three cases Already Liked , Already Disliked , neither
+		//We'll use firebase transaction because onLike we have to update both user and problem db
+		await runTransaction(firestore,async(transaction)=>{
+			const problemRef=doc(firestore,"problems",problem.id);
+			const userRef=doc(firestore,"users",user.uid);
+			const problemSnap=await transaction.get(problemRef);
+			const userSnap=await transaction.get(userRef);
+			if (problemSnap.exists() && userSnap.exists()) {
+				if (liked){
+					//remove problem id from likedProblems on user Document, decrement like count on problem document
+					transaction.update(userRef,{likedProblems:userSnap.data().likedProblems.filter((id:string)=>id!==problem.id)})
+					transaction.update(problemRef,{likes:problemSnap.data().likes-1})
+					setCurrentProblem((prev)=> prev ? ({...prev,likes:prev.likes-1}) : null)
+					setData(prev => ({...prev,liked:false}))
+				} else if (disliked){
+					transaction.update(userRef,{likedProblems:[...userSnap.data().likedProblems,problem.id],
+						dislikedProblems:userSnap.data().dislikedProblems.filter((id:string)=>id!==problem.id)
+					})
+					transaction.update(problemRef,{likes:problemSnap.data().likes+1,
+						dislikes:problemSnap.data().dislikes-1
+					})
+					setCurrentProblem((prev)=> prev ? ({...prev,likes:prev.likes+1,dislikes:prev.dislikes-1}) : null)
+					setData(prev => ({...prev,liked:true,disliked:false}))
+				} else {
+					transaction.update(userRef,{likedProblems:[...userSnap.data().likedProblems,problem.id]})
+					transaction.update(problemRef,{likes:problemSnap.data().likes+1})
+					setCurrentProblem((prev)=> prev ? ({...prev,likes:prev.likes+1}) : null)
+					setData(prev => ({...prev,liked:true}))
+				}
+			}
+		})
+	}
+
 	return (
 		<div className='bg-dark-layer-1 h-full min-w-0 border-r border-dark-divider-border-2 text-dark-gray-8'>
 			{/* TAB */}
@@ -39,8 +84,10 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 								<div className='rounded p-0.75 ml-4 text-lg transition-colors duration-200 text-dark-green-s'>
 									<BsCheck2Circle />
 								</div>
-								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-									<AiFillLike />
+								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'
+								onClick={handleLike}>
+									{liked && <AiFillLike style={{ color: "var(--color-dark-blue-s)" }} />}
+									{!liked && <AiFillLike />}
 									<span className='text-xs'>{currentProblem.likes}</span>
 								</div>
 								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
