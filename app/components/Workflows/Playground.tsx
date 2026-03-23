@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PrefenceNav from './preferenceNav';
 import dynamic from 'next/dynamic';
 import CodeMirror from '@uiw/react-codemirror'
@@ -19,15 +19,24 @@ const Split = dynamic(() => import('react-split'), { ssr: false });
 type PlaygroundProps = {
     problem: Problem
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>
-    setSolved:React.Dispatch<React.SetStateAction<boolean>>
+    setSolved: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess,setSolved }) => {
+const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [user] = useAuthState(auth);
 
     const [userCode, setUserCode] = useState<string>(problem.starterCode)
-    const params=useParams();   
+    const params = useParams();
+
+    useEffect(() => {
+        if (user) {
+            const code = localStorage.getItem(`code-${params.pid}`)
+            setUserCode(code ? JSON.parse(code) : problem.starterCode)
+        } else {
+            setUserCode(problem.starterCode)
+        }
+    }, [params.pid,problem.starterCode,user])
 
     const handleSubmission = async () => {
         if (!user) {
@@ -46,9 +55,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess,setSolved }
                 setTimeout(() => {
                     setSuccess(false)
                 }, 4000)
-                const userRef=doc(firestore,"users",user.uid)
-                await updateDoc(userRef,{
-                    solvedProblems:arrayUnion(params.pid)
+                const userRef = doc(firestore, "users", user.uid)
+                await updateDoc(userRef, {
+                    solvedProblems: arrayUnion(params.pid)
                 })
 
                 setSolved(true);
@@ -66,13 +75,14 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess,setSolved }
     }
     const onchange = (value: string) => {
         setUserCode(value);
+        localStorage.setItem(`code-${params.pid}`, JSON.stringify(value))
     }
     return <div className='flex h-full min-h-0 flex-col overflow-hidden bg-dark-layer-1 text-dark-gray-8'>
         <PrefenceNav />
         <Split className="min-h-0 flex-1" direction='vertical' sizes={[60, 40]} minSize={60}>
             <div className="min-h-0 w-full overflow-hidden">
                 <CodeMirror
-                    value={problem.starterCode}
+                    value={userCode}
                     theme={vscodeDark}
                     onChange={onchange}
                     extensions={[javascript()]}
