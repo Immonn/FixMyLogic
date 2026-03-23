@@ -109,7 +109,7 @@ const SignInPage = () => {
         <div className=' flex justify-center items-center mt-20 sm:mt-32'>
             <div className="bg-white rounded-2xl shadow-2xl relative py-16 px-8 sm:px-12 w-full max-w-[500px] bg-linear-to-b from-brand-orange to-slate-900 mx-6 flex flex-col items-center justify-center gap-6">
                 <p className='font-semibold text-4xl text-gray-200 mb-2'>Welcome Back!</p>
-                <Input ref={emailref} placeholder='Username' className='w-100' />
+                <Input ref={emailref} placeholder='Email' className='w-100' />
                 <Input ref={passwordref} placeholder='Password' className='w-100' />
                 {formError && <p className="text-red-400 text-sm text-center px-4">{formError}</p>}
                 <Button onClick={handlelogin} text={loading ? "Loading..":"Sign In"} />
