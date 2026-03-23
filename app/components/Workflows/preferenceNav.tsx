@@ -2,13 +2,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineSetting } from "react-icons/ai";
-
+import { ISetting } from './Playground';
+import SettingModal from '../SettingModal';
 
 type PrefenceNavProps = {
-    
+    settings:ISetting;
+    setSettings:React.Dispatch<React.SetStateAction<ISetting>>;
 };
 
-const PrefenceNav:React.FC<PrefenceNavProps> = () => {
+const PrefenceNav:React.FC<PrefenceNavProps> = ({settings,setSettings}) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
 
 	const handleFullScreen = () => {
@@ -28,7 +30,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = () => {
 			}
 			setIsFullScreen(true);
 		}
-
+        //Add Browsers
 		if (document.addEventListener) {
 			document.addEventListener("fullscreenchange", exitHandler);
 			document.addEventListener("webkitfullscreenchange", exitHandler);
@@ -84,6 +86,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = () => {
                 <div className='flex items-center m-2'>
 				<button
 					className='preferenceBtn group'
+                    onClick={()=>{setSettings({...settings,setSettingModalOpen:true})}}
 					
 				>
 					<div className='h-4 w-4 text-dark-gray-6 font-bold text-lg'>
@@ -99,6 +102,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = () => {
 					<div className='preferenceBtn-tooltip'>Full Screen</div>
 				</button>
 			</div>
+            {settings.setSettingModalOpen && <SettingModal settings={settings} setSettings={setSettings}/>}
 		</div>
 }
 export default PrefenceNav;

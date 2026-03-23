@@ -22,7 +22,19 @@ type PlaygroundProps = {
     setSolved: React.Dispatch<React.SetStateAction<boolean>>
 };
 
+export interface ISetting{
+    fontSize:string,
+    setSettingModalOpen:boolean,
+    dropdownIsOpen:boolean
+}
+
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
+
+    const [settings,setSettings]=useState<ISetting>({
+        fontSize:"16px",
+        setSettingModalOpen:false,
+        dropdownIsOpen:false,
+    });
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [user] = useAuthState(auth);
 
@@ -79,7 +91,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
         localStorage.setItem(`code-${params.pid}`, JSON.stringify(value))
     }
     return <div className='flex h-full min-h-0 flex-col overflow-hidden bg-dark-layer-1 text-dark-gray-8'>
-        <PrefenceNav />
+        <PrefenceNav settings={settings} setSettings={setSettings}/>
         <Split className="min-h-0 flex-1" direction='vertical' sizes={[60, 40]} minSize={60}>
             <div className="min-h-0 w-full overflow-hidden">
                 <CodeMirror
@@ -88,7 +100,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
                     onChange={onchange}
                     extensions={[javascript()]}
                     height='100%'
-                    style={{ fontSize: 16, height: '100%' }}
+                    style={{ fontSize: settings.fontSize, height: '100%' }}
                 />
             </div>
             <div className='min-h-0 w-full overflow-auto px-5 pb-4'>
