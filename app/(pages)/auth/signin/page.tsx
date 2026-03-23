@@ -5,10 +5,12 @@ import { Input } from '@/app/components/Input';
 import { Button } from '@/app/components/Button';
 import ResetPassword from '@/app/components/ResetPassword';
 import { auth, firestore } from "@/app/firebase/firebase";
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
+import { signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
+import { useEffect } from 'react';
 
 const SignInPage = () => {
     const [open, setOpen] = useState(false)
@@ -21,40 +23,53 @@ const SignInPage = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
     const emailref = useRef<HTMLInputElement>(null);
     const passwordref = useRef<HTMLInputElement>(null);
     const [formError, setFormError] = useState<string>("");
 
+    useEffect(() => {
+        const checkRedirect = async () => {
+            try {
+                const result = await getRedirectResult(auth);
+                if (result?.user) {
+                    const userRef = doc(firestore, "users", result.user.uid);
+                    const userSnap = await getDoc(userRef);
+
+                    if (!userSnap.exists()) {
+                        const userData = {
+                            uid: result.user.uid,
+                            email: result.user.email,
+                            createdAt: Date.now(),
+                            updatedAt: Date.now(),
+                            likedProblems: [],
+                            dislikedProblems: [],
+                            solvedProblems: [],
+                            starredProblems: [],
+                            displayName: result.user.displayName || "User"
+                        };
+                        await setDoc(userRef, userData);
+                    }
+                    router.push("/dashboard");
+                }
+            } catch (err: any) {
+                toast.error(err.message, {position: "top-center"});
+            } finally {
+                setIsGoogleLoading(false);
+            }
+        };
+        checkRedirect();
+    }, [router]);
+
     async function handleGoogleAuth() {
         try {
-            toast.loading("Authenticating...", {position:"top-center",toastId:"googleAuthToast"});
-            const newUser = await signInWithGoogle();
-            if (!newUser) return;
-
-            const userRef = doc(firestore, "users", newUser.user.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (!userSnap.exists()) {
-                const userData = {
-                    uid: newUser.user.uid,
-                    email: newUser.user.email,
-                    createdAt: Date.now(),
-                    updatedAt: Date.now(),
-                    likedProblems: [],
-                    dislikedProblems: [],
-                    solvedProblems: [],
-                    starredProblems: [],
-                    displayName: newUser.user.displayName || "User"
-                };
-                await setDoc(userRef, userData);
-            }
-            router.push("/dashboard");
+            setIsGoogleLoading(true);
+            const provider = new GoogleAuthProvider();
+            await signInWithRedirect(auth, provider);
         } catch (error: any) {
+            setIsGoogleLoading(false);
             toast.error(error.message, {position: "top-center"});
-        } finally {
-            toast.dismiss("googleAuthToast");
         }
     }
 
@@ -113,7 +128,7 @@ const SignInPage = () => {
                     className="w-full flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-4 border border-white/20 rounded-xl shadow-sm cursor-pointer transition-all duration-300 pointer-events-auto backdrop-blur-sm"
                 >
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 pointer-events-none drop-shadow-md" alt="Google" />
-                    {gLoading ? "Redirecting..." : "Continue with Google"}
+                    {isGoogleLoading ? "Redirecting..." : "Continue with Google"}
                 </div>
 
                 <div onClick={() => setOpen(true)} className='text-white/80 mt-3 hover:text-white transition duration-150 cursor-pointer text-sm font-medium tracking-wide'>Forgot Password?</div>
