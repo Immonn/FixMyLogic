@@ -1,20 +1,43 @@
 
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { problems } from '../mockdata/problem';
 import { BsCheckCircle } from 'react-icons/bs'
 import { AiFillYoutube } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
 import YouTube from 'react-youtube';
-import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type ProblemTableProps = {
     
 };
 
+const LoadingSkeleton = () => {
+    return (
+        <tr className='animate-pulse'>
+            <td className='px-6 py-4'>
+                <div className='w-6 h-6 shrink-0 rounded-full bg-dark-layer-1'></div>
+            </td>
+            <td className='px-6 py-4'>
+                <div className='h-4 sm:w-52 w-32 rounded-full bg-dark-layer-1'></div>
+            </td>
+            <td className='px-6 py-4'>
+                <div className='h-4 sm:w-52 w-32 rounded-full bg-dark-layer-1'></div>
+            </td>
+            <td className='px-6 py-4'>
+                <div className='h-4 sm:w-52 w-32 rounded-full bg-dark-layer-1'></div>
+            </td>
+            <td className='px-6 py-4'>
+                <div className='h-4 w-8 rounded-full bg-dark-layer-1'></div>
+                <span className='sr-only'>Loading...</span>
+            </td>
+        </tr>
+    );
+};
+
 const ProblemTable:React.FC<ProblemTableProps> = () => {
+    const [loading, setLoading] = useState(true);
     const [youtubePlayer,setYoutubePlayer]=useState({
         isOpen:false,
         videoId:""
@@ -25,6 +48,11 @@ const ProblemTable:React.FC<ProblemTableProps> = () => {
     };
 
     useEffect(()=>{
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    },[]);
+
+    useEffect(()=>{
         const handleEsc=(e:KeyboardEvent) =>{
             if (e.key==="Escape"){closeModal()}
         }
@@ -33,7 +61,8 @@ const ProblemTable:React.FC<ProblemTableProps> = () => {
     },[])
     return <>
         <tbody className='text-white'>
-            {problems.map((doc,idx)=>{
+            {loading && Array.from({ length: 10 }, (_, idx) => <LoadingSkeleton key={idx} />)}
+            {!loading && problems.map((doc,idx)=>{
                 const difficultyColor=doc.difficulty==="Easy" ? 'text-dark-green-s' : doc.difficulty==="Medium" ? "text-yellow-500" : "text-red-500";
                 return <tr className={`${idx %2==1 ? 'bg-dark-layer-1':''}`} key={doc.id}>
                     <td className='px-6 py-4 font-medium whitespace-nowrap text-dark-green-s'>
