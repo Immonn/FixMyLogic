@@ -9,6 +9,7 @@ import Timer from './Timer';
 import { useParams, useRouter } from "next/navigation";
 import { problems } from '../utils/problems';
 import { Problem } from '../utils/types';
+import { useHasMounted } from '../hooks/useHasMounted';
 
 
 type NavbarProps = {
@@ -19,6 +20,7 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
     const router = useRouter();
     const params = useParams();
+    const hasMounted = useHasMounted();
 
     const handleProblemChange = (isForward: boolean) => {
         const order = problems[params.pid as string]?.order;
@@ -76,7 +78,7 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
             hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Buymeacoffee</button>
             </Link>
             <div className='w-8 h-8 shrink-0'>
-                {user ? (
+                {hasMounted && (user ? (
                     <div className='cursor-pointer group relative w-full h-full'>
                         <img src='/avatar.png' alt='Avatar' className='rounded-full w-full h-full object-cover' />
                         <div
@@ -88,7 +90,7 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
                     </div>
                 ) : (
                     <div className='w-full h-full rounded-full border border-gray-500/70' />
-                )}
+                ))}
             </div>
         </div>
     </div>
