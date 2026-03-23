@@ -18,7 +18,7 @@ const LandingNavbar:React.FC<NavbarProps> = () => {
             hover:text-brand-orange hover:bg-white hover:border-white hover:shadow-[0_0_15px_rgb(255,255,255,0.3)] transition-all duration-300 ease-in-out'>Create Account</button>
             </Link>
             <Link href={"/auth/signin"}>
-            <div className='cursor-pointer border bg-brand-orange text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-base sm:text-lg font-semibold
+            <div className='cursor-pointer bg-brand-orange text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-base sm:text-lg font-semibold
             hover:bg-white hover:text-brand-orange transition duration-300 ease-in-out'>Sign In</div>
             </Link>
             
