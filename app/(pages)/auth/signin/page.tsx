@@ -9,8 +9,7 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
-import { signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
-import { useEffect } from 'react';
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const SignInPage = () => {
     const [open, setOpen] = useState(false)
@@ -29,47 +28,45 @@ const SignInPage = () => {
     const passwordref = useRef<HTMLInputElement>(null);
     const [formError, setFormError] = useState<string>("");
 
-    useEffect(() => {
-        const checkRedirect = async () => {
-            try {
-                const result = await getRedirectResult(auth);
-                if (result?.user) {
-                    const userRef = doc(firestore, "users", result.user.uid);
-                    const userSnap = await getDoc(userRef);
-
-                    if (!userSnap.exists()) {
-                        const userData = {
-                            uid: result.user.uid,
-                            email: result.user.email,
-                            createdAt: Date.now(),
-                            updatedAt: Date.now(),
-                            likedProblems: [],
-                            dislikedProblems: [],
-                            solvedProblems: [],
-                            starredProblems: [],
-                            displayName: result.user.displayName || "User"
-                        };
-                        await setDoc(userRef, userData);
-                    }
-                    router.push("/dashboard");
-                }
-            } catch (err: any) {
-                toast.error(err.message, {position: "top-center"});
-            } finally {
-                setIsGoogleLoading(false);
-            }
-        };
-        checkRedirect();
-    }, [router]);
-
     async function handleGoogleAuth() {
         try {
             setIsGoogleLoading(true);
             const provider = new GoogleAuthProvider();
-            await signInWithRedirect(auth, provider);
+            provider.setCustomParameters({ prompt: 'select_account' });
+            
+            const result = await signInWithPopup(auth, provider);
+            
+            if (result?.user) {
+                const userRef = doc(firestore, "users", result.user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (!userSnap.exists()) {
+                    const userData = {
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        createdAt: Date.now(),
+                        updatedAt: Date.now(),
+                        likedProblems: [],
+                        dislikedProblems: [],
+                        solvedProblems: [],
+                        starredProblems: [],
+                        displayName: result.user.displayName || "User"
+                    };
+                    await setDoc(userRef, userData);
+                }
+                router.push("/dashboard");
+            }
         } catch (error: any) {
+            console.error("Google Auth Error:", error);
+            if (error.code === 'auth/popup-blocked') {
+                toast.error("Popup blocked by browser! Please allow popups.", {position: "top-center"});
+            } else if (error.code === 'auth/popup-closed-by-user') {
+                toast.info("Authentication cancelled.", {position: "top-center"});
+            } else {
+                toast.error(error.message, {position: "top-center"});
+            }
+        } finally {
             setIsGoogleLoading(false);
-            toast.error(error.message, {position: "top-center"});
         }
     }
 
