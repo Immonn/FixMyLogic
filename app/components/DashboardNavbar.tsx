@@ -11,7 +11,7 @@ type NavbarProps = {
 
 const DashboardNavbar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
-    return <div className='flex items-center justify-between sm:px-12 px-2 md:px-24 '>
+    return <div className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 '>
         <div className="flex pointer-events-none select-none items-center justify-center h-20 ">
             <img src="/logo.png" alt='FixMyLogic' className='h-full' />
         </div>

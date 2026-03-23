@@ -8,12 +8,12 @@ export default function Patternwise() {
     
     return (
         <div className="bg-linear-to-b from-gray-600 to-black min-h-screen relative">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-[1440px] mx-auto">
                 <DashboardNavbar />
             </div>
 
-            <main className="max-w-5xl mt-2 mx-auto px-6 py-8">
-                <div className="overflow-x-auto rounded-lg border border-gray-700">
+            <main className="w-full max-w-[1440px] mt-4 mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8">
+                <div className="overflow-x-auto w-full rounded-lg border border-gray-700">
                     <table className="w-full text-left text-white">
                         <thead className="bg-gray-800/70">
                             <tr>
