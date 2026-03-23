@@ -1,10 +1,11 @@
-
+'use client'
 import DashboardNavbar from "@/app/components/DashboardNavbar";
 import ProblemTable from "@/app/components/ProblemTable";
-
+import { useState } from "react";
 
 export default function Patternwise() {
-
+    const [loadingProblem,setLoadingProblem]=useState<boolean>(false);
+    
     return (
         <div className="bg-linear-to-b from-gray-600 to-black min-h-screen relative">
             <div className="max-w-7xl mx-auto">
@@ -33,11 +34,39 @@ export default function Patternwise() {
                                 </th>
                             </tr>
                         </thead>
-                        <ProblemTable />
+                        {loadingProblem && (
+                            <tbody className="animate-pulse">
+                                {[...Array(5)].map((_, idx) => (
+                                    <LoadingSkeleton key={idx} />
+                                ))}
+                            </tbody>
+                        )}
+                        <ProblemTable setLoadingProblems={setLoadingProblem}/>
                     </table>
                 </div>
-                
             </main>
         </div>
     );
 }
+
+const LoadingSkeleton = () => {
+    return (
+        <tr>
+            <td className="px-6 py-4">
+                <div className="w-6 h-6 rounded-full bg-dark-layer-1"></div>
+            </td>
+            <td className="px-6 py-4">
+                <div className="h-4 sm:w-52 w-32 rounded-full bg-dark-layer-1"></div>
+            </td>
+            <td className="px-6 py-4">
+                <div className="h-4 w-24 rounded-full bg-dark-layer-1"></div>
+            </td>
+            <td className="px-6 py-4">
+                <div className="h-4 w-24 rounded-full bg-dark-layer-1"></div>
+            </td>
+            <td className="px-6 py-4">
+                <div className="w-8 h-8 rounded-full bg-dark-layer-1"></div>
+            </td>
+        </tr>
+    );
+};

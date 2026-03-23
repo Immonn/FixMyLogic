@@ -9,12 +9,15 @@ import { IoClose } from 'react-icons/io5';
 import YouTube from 'react-youtube';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useGetProblems } from '../hooks/useGetProblem';
 
 type ProblemTableProps = {
-    
+    setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ProblemTable:React.FC<ProblemTableProps> = () => {
+const ProblemTable:React.FC<ProblemTableProps> = ({setLoadingProblems}) => {
+
+    const problems=useGetProblems(setLoadingProblems);
     const [youtubePlayer,setYoutubePlayer]=useState({
         isOpen:false,
         videoId:""
