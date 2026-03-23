@@ -1,5 +1,5 @@
 import { Problem } from "@/app/utils/types";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { AiFillLike, AiFillDislike, AiFillStar } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import { useGetCurrentProblem } from "@/app/hooks/useGetCurrentProblem";
@@ -9,7 +9,7 @@ import {useGetUserData} from "@/app/hooks/useGetUserData";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/app/firebase/firebase";
 import {toast} from "react-toastify"
-import { doc, runTransaction } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, runTransaction, updateDoc } from "firebase/firestore";
 
 type ProblemDescriptionProps = {
 	problem: Problem;
@@ -27,6 +27,26 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 		const problemSnap=await transaction.get(problemRef);
 		const userSnap=await transaction.get(userRef);
 		return {problemSnap,userSnap,userRef,problemRef}
+	}
+
+	async function handleStar(){
+		if (!user){
+			toast.error("You must be logged In to star this problem",{position:"top-center",theme:"dark"});
+			return 
+		}
+		if (!starred){
+			const userRef=doc(firestore,"users",user.uid)
+			await updateDoc(userRef,{
+				starredProblems:arrayUnion(problem.id)
+			})
+			setData((prev)=>({...prev,starred:true}))
+		}else{
+			const userRef=doc(firestore,"users",user.uid)
+			await updateDoc(userRef,{
+				starredProblems:arrayRemove(problem.id)
+			})
+			setData((prev)=>({...prev,starred:false}))
+		}
 	}
 
 	async function handleLike(){
@@ -138,8 +158,10 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 									{!disliked && <AiFillDislike />}
 									<span className='text-xs'>{currentProblem.dislikes}</span>
 								</div>
-								<div className='cursor-pointer hover:bg-dark-fill-3  rounded p-0.75  ml-4 text-xl transition-colors duration-200 text-dark-gray-6 '>
-									<TiStarOutline />
+								<div className='cursor-pointer hover:bg-dark-fill-3  rounded p-0.75  ml-4 text-xl transition-colors duration-200 text-dark-gray-6 '
+								onClick={handleStar}>
+									{starred && <AiFillStar className="text-yellow-500" />}
+									{!starred && <TiStarOutline />}
 								</div>
 							</div>
 						)}
