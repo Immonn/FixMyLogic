@@ -2,7 +2,6 @@
 'use client'
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { problems } from '../mockdata/problem';
 import { BsCheckCircle } from 'react-icons/bs'
 import { AiFillYoutube } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
