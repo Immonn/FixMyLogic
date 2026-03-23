@@ -38,28 +38,27 @@ const LandingPage = () => {
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
                         <MetricCard 
-                            title="DSA" 
+                            title="DSA Pattern Wise" 
                             icon={<FaCubes />} 
                             color="bg-[#30a283]" 
                             onClick={() => router.push("/patternwise")} 
                         />
                         <MetricCard 
-                            title="Low Level Design (LLD)" 
+                            title="Low Level Design (LLD) (Coming Soon)" 
                             icon={<MdOutlineGridOn />} 
                             color="bg-[#d4bca4]" 
-                            onClick={() => router.push("/patternwise")} 
+                            
                         />
                         <MetricCard 
-                            title="All Problems" 
+                            title="All Problems (Coming Soon)" 
                             icon={<FaGem />} 
                             color="bg-[#3e4db9]" 
-                            onClick={() => router.push("/patternwise")} 
+            
                         />
                         <MetricCard 
-                            title="OOPS" 
+                            title="OOPS (Coming Soon)" 
                             icon={<FaNetworkWired />} 
                             color="bg-[#a874d4]" 
-                            onClick={() => router.push("/patternwise")} 
                         />
                     </div>
                 </div>
