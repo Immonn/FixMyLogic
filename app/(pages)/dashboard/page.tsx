@@ -1,8 +1,10 @@
 "use client";
 
-import { Card } from "@/app/components/CardComponent";
+import { MetricCard } from "@/app/components/MetricCard";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
 import { useRouter } from "next/navigation";
+import { FaCubes, FaGem, FaNetworkWired } from "react-icons/fa";
+import { MdOutlineGridOn } from "react-icons/md";
 
 const LandingPage = () => {
     const router = useRouter();
@@ -32,13 +34,33 @@ const LandingPage = () => {
                 <div className="mb-20">
                     <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
                         <span className="w-1.5 h-8 bg-brand-orange rounded-full shadow-[0_0_10px_rgb(255,161,22)]"></span>
-                        Recommended Paths
+                        Featured
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-                        <Card onClick={() => router.push("/patternwise")} image="/Patternwise.png" />
-                        <Card onClick={() => router.push("/patternwise")} image="/Patternwise.png" />
-                        <Card onClick={() => router.push("/patternwise")} image="/Patternwise.png" />
-                        <Card onClick={() => router.push("/patternwise")} image="/Patternwise.png" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
+                        <MetricCard 
+                            title="DSA" 
+                            icon={<FaCubes />} 
+                            color="bg-[#30a283]" 
+                            onClick={() => router.push("/patternwise")} 
+                        />
+                        <MetricCard 
+                            title="Low Level Design (LLD)" 
+                            icon={<MdOutlineGridOn />} 
+                            color="bg-[#d4bca4]" 
+                            onClick={() => router.push("/patternwise")} 
+                        />
+                        <MetricCard 
+                            title="All Problems" 
+                            icon={<FaGem />} 
+                            color="bg-[#3e4db9]" 
+                            onClick={() => router.push("/patternwise")} 
+                        />
+                        <MetricCard 
+                            title="OOPS" 
+                            icon={<FaNetworkWired />} 
+                            color="bg-[#a874d4]" 
+                            onClick={() => router.push("/patternwise")} 
+                        />
                     </div>
                 </div>
             </div>
