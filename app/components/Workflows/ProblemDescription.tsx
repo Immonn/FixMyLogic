@@ -19,6 +19,16 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 	const {liked,disliked,solved,setData,starred}=useGetUserData(problem.id);
 	const [user]=useAuthState(auth)
 	const { currentProblem, loading, problemDifficulty,setCurrentProblem } = useGetCurrentProblem(problem.id);
+	
+	
+	const returnUserDataAndProblemData=async (transaction:any) =>{
+		const problemRef=doc(firestore,"problems",problem.id);
+		const userRef=doc(firestore,"users",user!.uid);
+		const problemSnap=await transaction.get(problemRef);
+		const userSnap=await transaction.get(userRef);
+		return {problemSnap,userSnap,userRef,problemRef}
+	}
+
 	async function handleLike(){
 		if (!user){
 			toast.error("You must be logged In to like this problem",{position:"top-center",theme:"dark"});
@@ -27,10 +37,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 		//Three cases Already Liked , Already Disliked , neither
 		//We'll use firebase transaction because onLike we have to update both user and problem db
 		await runTransaction(firestore,async(transaction)=>{
-			const problemRef=doc(firestore,"problems",problem.id);
-			const userRef=doc(firestore,"users",user.uid);
-			const problemSnap=await transaction.get(problemRef);
-			const userSnap=await transaction.get(userRef);
+			const {problemSnap,userSnap,userRef,problemRef}=await returnUserDataAndProblemData(transaction);
 			if (problemSnap.exists() && userSnap.exists()) {
 				if (liked){
 					//remove problem id from likedProblems on user Document, decrement like count on problem document
@@ -55,6 +62,41 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 				}
 			}
 		})
+	}
+
+	async function handleDisliked(){
+		if (!user){
+			toast.error("You must be logged In to like this problem",{position:"top-center",theme:"dark"});
+			return 
+		}
+		await runTransaction(firestore,async(transaction)=>{
+			const {userRef,problemRef,userSnap,problemSnap}=await returnUserDataAndProblemData(transaction);
+			if (problemSnap.exists() && userSnap.exists()) {
+				//Alredy Disliked , Already Liked , Neither
+				if (disliked){
+					transaction.update(userRef,{dislikedProblems:userSnap.data().dislikedProblems.filter((id:string)=>id!==problem.id)})
+					transaction.update(problemRef,{dislikes:problemSnap.data().dislikes-1})
+					setCurrentProblem((prev)=> prev ? ({...prev,dislikes:prev.dislikes-1}) : null)
+					setData(prev => ({...prev,disliked:false}))
+				} else if (liked){
+					transaction.update(userRef,{dislikedProblems:[...userSnap.data().dislikedProblems,problem.id],
+						likedProblems:userSnap.data().likedProblems.filter((id:string)=>id!==problem.id)
+					})
+					transaction.update(problemRef,{dislikes:problemSnap.data().dislikes+1,
+						likes:problemSnap.data().likes-1
+					})
+					setCurrentProblem((prev)=> prev ? ({...prev,dislikes:prev.dislikes+1,likes:prev.likes-1}) : null)
+					setData(prev => ({...prev,disliked:true,liked:false}))
+				} else {
+					transaction.update(userRef,{dislikedProblems:[...userSnap.data().dislikedProblems,problem.id]})
+					transaction.update(problemRef,{dislikes:problemSnap.data().dislikes+1})
+					setCurrentProblem((prev)=> prev ? ({...prev,dislikes:prev.dislikes+1}) : null)
+					setData(prev => ({...prev,disliked:true}))
+				}
+			}
+
+		})
+
 	}
 
 	return (
@@ -90,8 +132,10 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 									{!liked && <AiFillLike />}
 									<span className='text-xs'>{currentProblem.likes}</span>
 								</div>
-								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-									<AiFillDislike />
+								<div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-0.75  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'
+								onClick={handleDisliked}>
+									{disliked && <AiFillDislike style={{ color: "var(--color-dark-blue-s)" }} />}
+									{!disliked && <AiFillDislike />}
 									<span className='text-xs'>{currentProblem.dislikes}</span>
 								</div>
 								<div className='cursor-pointer hover:bg-dark-fill-3  rounded p-0.75  ml-4 text-xl transition-colors duration-200 text-dark-gray-6 '>
