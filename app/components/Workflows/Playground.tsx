@@ -26,7 +26,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [user] = useAuthState(auth);
 
-    const [userCode, setUserCode] = useState<string>(problem.starterCode)
+    let [userCode, setUserCode] = useState<string>(problem.starterCode)
     const params = useParams();
 
     useEffect(() => {
@@ -44,6 +44,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
             return;
         }
         try {
+            userCode=userCode.slice(userCode.indexOf(problem.starterFunctionName)) //Handle commented code for reverse l-l type problem
             const cb = new Function(`return ${userCode}`)(); //It convert String to function
             const handler = problems[params.pid as string].handlerFunction;
             if (typeof handler === 'function') {
