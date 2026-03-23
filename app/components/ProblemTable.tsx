@@ -38,19 +38,19 @@ const ProblemTable:React.FC<ProblemTableProps> = ({ setLoadingProblems, loadingP
             {loadingProblems && Array.from({ length: 6 }).map((_, idx) => (
                 <tr key={`skeleton-${idx}`} className='animate-pulse'>
                     <td className='px-6 py-4'>
-                        <div className='w-6 h-6 rounded-full bg-white/35'></div>
+                        <div className='w-6 h-6 rounded-full bg-gray-600'></div>
                     </td>
                     <td className='px-6 py-4'>
-                        <div className='h-4 w-40 rounded-full bg-white/35'></div>
+                        <div className='h-4 w-40 rounded-full bg-gray-600'></div>
                     </td>
                     <td className='px-6 py-4'>
-                        <div className='h-4 w-28 rounded-full bg-white/35'></div>
+                        <div className='h-4 w-28 rounded-full bg-gray-600'></div>
                     </td>
                     <td className='px-6 py-4'>
-                        <div className='h-4 w-36 rounded-full bg-white/35'></div>
+                        <div className='h-4 w-36 rounded-full bg-gray-600'></div>
                     </td>
                     <td className='px-6 py-4'>
-                        <div className='h-4 w-20 rounded-full bg-white/35'></div>
+                        <div className='h-4 w-20 rounded-full bg-gray-600'></div>
                     </td>
                 </tr>
             ))}
