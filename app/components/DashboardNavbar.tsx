@@ -11,11 +11,11 @@ type NavbarProps = {
 
 const DashboardNavbar: React.FC<NavbarProps> = () => {
     const [user] = useAuthState(auth)
-    return <div className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 '>
-        <div className="flex pointer-events-none select-none items-center justify-center h-20 ">
-            <img src="/logo.png" alt='FixMyLogic' className='h-full' />
+    return <div className='flex items-center justify-between py-6'>
+        <div className="flex pointer-events-none select-none items-center justify-center h-12 ">
+            <img src="/logo.png" alt='FixMyLogic' className='h-full object-contain' />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
             <Link href={"/auth/signup"}>
                 <button className='cursor-pointer border border-gray-300 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
             hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Buymeacoffee</button>
