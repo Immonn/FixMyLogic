@@ -25,7 +25,8 @@ type PlaygroundProps = {
 export interface ISetting{
     fontSize:string,
     setSettingModalOpen:boolean,
-    dropdownIsOpen:boolean
+    dropdownIsOpen:boolean,
+    selectedLanguage:string
 }
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
@@ -34,6 +35,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
         fontSize:"16px",
         setSettingModalOpen:false,
         dropdownIsOpen:false,
+        selectedLanguage:"JavaScript"
     });
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [user] = useAuthState(auth);
@@ -90,18 +92,28 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
         setUserCode(value);
         localStorage.setItem(`code-${params.pid}`, JSON.stringify(value))
     }
+    const isJavaScript = settings.selectedLanguage === 'JavaScript';
+
     return <div className='flex h-full min-h-0 flex-col overflow-hidden bg-dark-layer-1 text-dark-gray-8'>
         <PrefenceNav settings={settings} setSettings={setSettings}/>
         <Split className="min-h-0 flex-1" direction='vertical' sizes={[60, 40]} minSize={60}>
-            <div className="min-h-0 w-full overflow-hidden">
-                <CodeMirror
-                    value={userCode}
-                    theme={vscodeDark}
-                    onChange={onchange}
-                    extensions={[javascript()]}
-                    height='100%'
-                    style={{ fontSize: settings.fontSize, height: '100%' }}
-                />
+            <div className="min-h-0 w-full overflow-hidden relative">
+                {isJavaScript ? (
+                    <CodeMirror
+                        value={userCode}
+                        theme={vscodeDark}
+                        onChange={onchange}
+                        extensions={[javascript()]}
+                        height='100%'
+                        style={{ fontSize: settings.fontSize, height: '100%' }}
+                    />
+                ) : (
+                    <div className='flex flex-col items-center justify-center h-full bg-dark-layer-1 text-center px-6'>
+                        <div className='text-5xl mb-4'>🚧</div>
+                        <h2 className='text-2xl font-bold text-white mb-2'>{settings.selectedLanguage} — Coming Soon</h2>
+                        <p className='text-dark-gray-6 text-sm max-w-xs'>Support for {settings.selectedLanguage} is under development. Please use JavaScript for now.</p>
+                    </div>
+                )}
             </div>
             <div className='min-h-0 w-full overflow-auto px-5 pb-4'>
                 {/* TestCases Heading */}

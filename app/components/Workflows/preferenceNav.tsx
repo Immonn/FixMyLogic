@@ -40,7 +40,6 @@ const PrefenceNav:React.FC<PrefenceNavProps> = ({settings,setSettings}) => {
 	}, [isFullScreen]);
     
     const languages = ['JavaScript', 'Java', 'C++', 'Python'];
-    const [selectedLanguage, setSelectedLanguage] = useState<string>('JavaScript');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +61,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = ({settings,setSettings}) => {
                         onClick={() => setIsOpen((prev) => !prev)}
                         className='w-full flex items-center justify-between gap-2 px-3 h-9 rounded-t-md border border-dark-divider-border-2 bg-dark-layer-1 text-white cursor-pointer'
                     >
-                        <span className='truncate'>{selectedLanguage}</span>
+                        <span className='truncate'>{settings.selectedLanguage}</span>
                         <FaChevronDown className={`text-xs transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                     <div
@@ -73,7 +72,7 @@ const PrefenceNav:React.FC<PrefenceNavProps> = ({settings,setSettings}) => {
                                 key={language}
                                 type='button'
                                 onClick={() => {
-                                    setSelectedLanguage(language);
+                                    setSettings({ ...settings, selectedLanguage: language });
                                     setIsOpen(false);
                                 }}
                                 className='w-full text-left px-3 py-2 text-sm text-dark-gray-8 hover:bg-dark-fill-3 cursor-pointer'
