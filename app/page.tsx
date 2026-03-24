@@ -6,7 +6,7 @@ import LandingNavbar from "@/app/components/LandingNavbar"
 const LandingPage= () => { 
 
     return <div className='bg-linear-to-b from-gray-600 to-black 
-    h-screen relative'>
+    min-h-screen relative'>
         <div className="max-w-7xl mx-auto flex flex-col h-screen">
             <LandingNavbar/>
             <div className='flex-1 flex items-center justify-center w-full pointer-events-none select-none px-4 sm:px-8 pb-10'>

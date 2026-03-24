@@ -101,7 +101,7 @@ const SignInPage = () => {
         }
 
     }
-    return <div className='bg-linear-to-b from-gray-600 to-black h-screen relative'>
+    return <div className='bg-linear-to-b from-gray-600 to-black min-h-screen relative pb-10'>
         <div className="max-w-7xl mx-auto">
             <Navbar />
         </div>
