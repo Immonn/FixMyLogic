@@ -59,17 +59,18 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
             toast.error("Please login to submit your code", { position: "top-center", autoClose: 3000, theme: "dark" })
             return;
         }
+        // Reset both before each submission
+        setSuccess(false);
+        setFailed(false);
         try {
-            userCode=userCode.slice(userCode.indexOf(problem.starterFunctionName)) //Handle commented code for reverse l-l type problem
-            const cb = new Function(`return ${userCode}`)(); //It convert String to function
+            userCode=userCode.slice(userCode.indexOf(problem.starterFunctionName))
+            const cb = new Function(`return ${userCode}`)();
             const handler = problems[params.pid as string].handlerFunction;
             if (typeof handler === 'function') {
                 const result = handler(cb);
                 if (result) {
                     toast.success("Congrats! All Testcases Passed", { position: "top-center", autoClose: 3000, theme: "dark" })
                     setSuccess(true);
-                    setFailed(false);
-                    setTimeout(() => { setSuccess(false) }, 4000)
                     const userRef = doc(firestore, "users", user.uid)
                     await updateDoc(userRef, {
                         solvedProblems: arrayUnion(params.pid)
@@ -80,8 +81,6 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
         } catch (error: any) {
             console.log(error)
             setFailed(true);
-            setSuccess(false);
-            setTimeout(() => { setFailed(false) }, 4000)
             if (error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal")) {
                 toast.error("Oops! One or more Testcases Failed", { position: "top-center", autoClose: 3000, theme: "dark" })
             } else {
