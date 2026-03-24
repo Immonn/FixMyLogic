@@ -20,6 +20,7 @@ type PlaygroundProps = {
     problem: Problem
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>
     setSolved: React.Dispatch<React.SetStateAction<boolean>>
+    success: boolean
 };
 
 export interface ISetting{
@@ -29,7 +30,7 @@ export interface ISetting{
     selectedLanguage:string
 }
 
-const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
+const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved, success }) => {
 
     const [settings,setSettings]=useState<ISetting>({
         fontSize:"16px",
@@ -38,6 +39,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
         selectedLanguage:"JavaScript"
     });
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
+    const [failed, setFailed] = useState<boolean>(false);
     const [user] = useAuthState(auth);
 
     let [userCode, setUserCode] = useState<string>(problem.starterCode)
@@ -62,27 +64,27 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
             const cb = new Function(`return ${userCode}`)(); //It convert String to function
             const handler = problems[params.pid as string].handlerFunction;
             if (typeof handler === 'function') {
-                const success = handler(cb);
-                if (success) {
+                const result = handler(cb);
+                if (result) {
                     toast.success("Congrats! All Testcases Passed", { position: "top-center", autoClose: 3000, theme: "dark" })
                     setSuccess(true);
+                    setFailed(false);
+                    setTimeout(() => { setSuccess(false) }, 4000)
+                    const userRef = doc(firestore, "users", user.uid)
+                    await updateDoc(userRef, {
+                        solvedProblems: arrayUnion(params.pid)
+                    })
+                    setSolved(true);
                 }
-                setTimeout(() => {
-                    setSuccess(false)
-                }, 4000)
-                const userRef = doc(firestore, "users", user.uid)
-                await updateDoc(userRef, {
-                    solvedProblems: arrayUnion(params.pid)
-                })
-
-                setSolved(true);
             }
         } catch (error: any) {
             console.log(error)
+            setFailed(true);
+            setSuccess(false);
+            setTimeout(() => { setFailed(false) }, 4000)
             if (error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal")) {
                 toast.error("Oops! One or more Testcases Failed", { position: "top-center", autoClose: 3000, theme: "dark" })
-            }
-            else {
+            } else {
                 toast.error(error.message, { position: "top-center", autoClose: 3000, theme: "dark" })
             }
         }
@@ -119,8 +121,8 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
                 {/* TestCases Heading */}
                 <div className='flex h-10 items-center space-x-6'>
                     <div className='relative flex h-full flex-col justify-center cursor-pointer'>
-                        <div className='text-sm font-medium leading-5 text-white'>Testcases</div>
-                        <hr className='absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white' />
+                        <div className={`text-sm font-medium leading-5 transition-colors duration-300 ${success ? 'text-green-500' : failed ? 'text-red-500' : 'text-white'}`}>Testcases</div>
+                        <hr className={`absolute bottom-0 h-0.5 w-full rounded-full border-none transition-colors duration-300 ${success ? 'bg-green-500' : failed ? 'bg-red-500' : 'bg-white'}`} />
                     </div>
                 </div>
                 <div className="flex">
