@@ -132,7 +132,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
                             <div className="flex flex-wrap items-center gap-y-4">
                                 <div className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3
                             hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
-                            ${activeTestCaseId === index ? "text-white" : "text-gray-500"} `}>
+                            ${success ? 'text-green-500' : failed ? 'text-red-500' : activeTestCaseId === index ? 'text-white' : 'text-gray-500'}`}>
                                     Case {index + 1}
                                 </div>
                             </div>
