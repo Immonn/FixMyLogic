@@ -43,6 +43,7 @@ export const jumpGame: Problem = {
 			inputText: `nums = [2,3,1,1,4]`,
 			outputText: `true`,
 			explanation: "Jump 1 step from index 0 to 1, then 3 steps to the last index.",
+			inputArgs: [[2, 3, 1, 1, 4]],
 		},
 		{
 			id: 1,
@@ -50,6 +51,7 @@ export const jumpGame: Problem = {
 			outputText: `false`,
 			explanation:
 				"You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.",
+			inputArgs: [[3, 2, 1, 0, 4]],
 		},
 	],
 	constraints: `<li class='mt-2'><code>1 <= nums.length <= 10^4</code></li>

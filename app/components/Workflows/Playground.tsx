@@ -40,6 +40,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
     });
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [failed, setFailed] = useState<boolean>(false);
+    const [actualOutputs, setActualOutputs] = useState<string[]>([]);
     const [user] = useAuthState(auth);
 
     let [userCode, setUserCode] = useState<string>(problem.starterCode)
@@ -62,11 +63,24 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
         // Reset both before each submission
         setSuccess(false);
         setFailed(false);
+        setActualOutputs([]);
         try {
             userCode=userCode.slice(userCode.indexOf(problem.starterFunctionName))
             const cb = new Function(`return ${userCode}`)();
             const handler = problems[params.pid as string].handlerFunction;
             if (typeof handler === 'function') {
+                // Collect per-case actual outputs if inputArgs are available
+                const outputs: string[] = problem.examples.map((ex) => {
+                    if (!ex.inputArgs) return 'N/A';
+                    try {
+                        const res = cb(...ex.inputArgs);
+                        return JSON.stringify(res);
+                    } catch {
+                        return 'Error';
+                    }
+                });
+                setActualOutputs(outputs);
+
                 const result = handler(cb);
                 if (result) {
                     toast.success("Congrats! All Testcases Passed", { position: "top-center", autoClose: 3000, theme: "dark" })
@@ -140,14 +154,23 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
 
                 </div>
                 <div className="font-semibold my-4 min-w-0">
-                    <p className='text-sm font-medium mt-4  text-white'>Input : </p>
+                    <p className='text-sm font-medium mt-4 text-white'>Input : </p>
                     <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
                         {problem.examples[activeTestCaseId].inputText}
                     </div>
-                    <p className='text-sm font-medium mt-4  text-white'>Output : </p>
+                    <p className='text-sm font-medium mt-4 text-white'>Output : </p>
                     <div className='w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 border-tarnsparent text-white mt-2 whitespace-pre-wrap wrap-break-word leading-6'>
                         {problem.examples[activeTestCaseId].outputText}
                     </div>
+                    {actualOutputs.length > 0 && (
+                        <>
+                            <p className='text-sm font-medium mt-4 text-white'>Your Output : </p>
+                            <div className={`w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 mt-2 whitespace-pre-wrap wrap-break-word leading-6 transition-colors duration-300
+                                ${success ? 'text-green-400 border-green-700' : failed ? 'text-red-400 border-red-700' : 'text-white border-transparent'}`}>
+                                {actualOutputs[activeTestCaseId] ?? 'N/A'}
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </Split>

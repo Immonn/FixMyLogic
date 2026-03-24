@@ -31,21 +31,25 @@ export const validParentheses: Problem = {
 			id: 0,
 			inputText: 's = "()"',
 			outputText: "true",
+			inputArgs: ["()"],
 		},
 		{
 			id: 1,
 			inputText: 's = "()[]{}"',
 			outputText: "true",
+			inputArgs: ["()[]{}"],
 		},
 		{
 			id: 2,
 			inputText: 's = "(]"',
 			outputText: "false",
+			inputArgs: ["(]"],
 		},
 		{
 			id: 3,
 			inputText: 's = "([)]"',
 			outputText: "false",
+			inputArgs: ["([)]"],
 		},
 	],
 	constraints: `<li class='mt-2'><code>1 <= s.length <= 10<sup>4</sup></code></li>

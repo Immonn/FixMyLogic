@@ -4,6 +4,7 @@ export type Example = {
 	outputText: string;
 	explanation?: string;
 	img?: string;
+	inputArgs?: any[];
 };
 
 // local problem data
