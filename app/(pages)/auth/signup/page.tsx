@@ -122,9 +122,9 @@ const SignupPage: React.FC<SignupPageProps> = () => {
         <div className="max-w-7xl mx-auto">
             <Navbar />
         </div>
-        <div className=' flex justify-center items-center mt-20 sm:mt-32'>
-            <div className="bg-white rounded-2xl shadow-2xl relative py-16 px-8 sm:px-12 w-full max-w-[500px] bg-linear-to-b from-brand-orange to-slate-900 mx-6 flex flex-col items-center justify-center gap-6">
-                <p className='font-semibold text-3xl sm:text-4xl text-gray-200 mb-2'>Create Account</p>
+        <div className='flex justify-center items-center mt-6 sm:mt-10'>
+            <div className="rounded-2xl shadow-2xl relative py-8 px-8 sm:px-12 w-full max-w-[440px] bg-linear-to-b from-brand-orange to-slate-900 mx-6 flex flex-col items-center justify-center gap-4">
+                <p className='font-semibold text-3xl text-gray-200 mb-1'>Create Account</p>
                 <Input ref={emailref} placeholder='Email' />
                 <Input ref={usernameref} placeholder='Username' />
                 <Input ref={passwordref} placeholder='Password' />
