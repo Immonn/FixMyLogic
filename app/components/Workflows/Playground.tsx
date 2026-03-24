@@ -41,6 +41,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
     const [activeTestCaseId, setActiveCaseId] = useState<number>(0);
     const [failed, setFailed] = useState<boolean>(false);
     const [actualOutputs, setActualOutputs] = useState<string[]>([]);
+    const [caseResults, setCaseResults] = useState<boolean[]>([]); // true=pass, false=fail per case
     const [user] = useAuthState(auth);
 
     let [userCode, setUserCode] = useState<string>(problem.starterCode)
@@ -64,25 +65,41 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
         setSuccess(false);
         setFailed(false);
         setActualOutputs([]);
+        setCaseResults([]);
         try {
             userCode=userCode.slice(userCode.indexOf(problem.starterFunctionName))
             const cb = new Function(`return ${userCode}`)();
             const handler = problems[params.pid as string].handlerFunction;
             if (typeof handler === 'function') {
-                // Collect per-case actual outputs if inputArgs are available
-                const outputs: string[] = problem.examples.map((ex) => {
-                    if (!ex.inputArgs) return 'N/A';
+                // Per-case: run fn and compare output
+                const outputs: string[] = [];
+                const results: boolean[] = [];
+                for (const ex of problem.examples) {
+                    if (!ex.inputArgs) {
+                        outputs.push('N/A');
+                        results.push(false);
+                        continue;
+                    }
                     try {
                         const res = cb(...ex.inputArgs);
-                        return JSON.stringify(res);
+                        const actual = JSON.stringify(res);
+                        outputs.push(actual);
+                        // Compare with expected (parse outputText as JSON for deep equality)
+                        try {
+                            results.push(JSON.stringify(JSON.parse(ex.outputText)) === actual);
+                        } catch {
+                            results.push(String(res) === ex.outputText);
+                        }
                     } catch {
-                        return 'Error';
+                        outputs.push('Error');
+                        results.push(false);
                     }
-                });
+                }
                 setActualOutputs(outputs);
+                setCaseResults(results);
 
-                const result = handler(cb);
-                if (result) {
+                const allPassed = handler(cb);
+                if (allPassed) {
                     toast.success("Congrats! All Testcases Passed", { position: "top-center", autoClose: 3000, theme: "dark" })
                     setSuccess(true);
                     const userRef = doc(firestore, "users", user.uid)
@@ -145,7 +162,11 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
                             <div className="flex flex-wrap items-center gap-y-4">
                                 <div className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3
                             hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
-                            ${success ? 'text-green-500' : failed ? 'text-red-500' : activeTestCaseId === index ? 'text-white' : 'text-gray-500'}`}>
+                            ${
+                                caseResults.length > 0
+                                    ? caseResults[index] ? 'text-green-500' : 'text-red-500'
+                                    : activeTestCaseId === index ? 'text-white' : 'text-gray-500'
+                            }`}>
                                     Case {index + 1}
                                 </div>
                             </div>
@@ -166,7 +187,11 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
                         <>
                             <p className='text-sm font-medium mt-4 text-white'>Your Output : </p>
                             <div className={`w-full min-w-0 cursor-text rounded-lg border px-4 py-2.5 bg-dark-fill-3 mt-2 whitespace-pre-wrap wrap-break-word leading-6 transition-colors duration-300
-                                ${success ? 'text-green-400 border-green-700' : failed ? 'text-red-400 border-red-700' : 'text-white border-transparent'}`}>
+                                ${
+                                    caseResults.length > 0
+                                        ? caseResults[activeTestCaseId] ? 'text-green-400 border-green-700' : 'text-red-400 border-red-700'
+                                        : 'text-white border-transparent'
+                                }`}>
                                 {actualOutputs[activeTestCaseId] ?? 'N/A'}
                             </div>
                         </>
