@@ -3,7 +3,7 @@
 import { auth, firestore } from "@/app/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast, ToastContainer } from "react-toastify";
@@ -22,12 +22,26 @@ const AddProblemPage: React.FC = () => {
 		dislikes: 0,
 	});
 
+	const [user, loadingAuth] = useAuthState(auth);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!loadingAuth && !user) {
+			router.push("/auth/signin");
+		}
+	}, [user, loadingAuth, router]);
+
 	const [loading, setLoading] = useState(false);
-	const user=useAuthState(auth)
-	const router=useRouter()
-	if (!user){
-		router.push("/login")
+
+	if (loadingAuth) {
+		return (
+			<div className='bg-dark-layer-2 min-h-screen flex items-center justify-center'>
+				<div className='text-white text-xl animate-pulse'>Loading...</div>
+			</div>
+		);
 	}
+
+	if (!user) return null;
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		setInput({
