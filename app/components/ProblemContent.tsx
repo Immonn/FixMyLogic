@@ -3,13 +3,15 @@
 import ProblemNavBar from "@/app/components/ProblemNavbar";
 import Workflow from "@/app/components/Workflows/Workflow";
 import { notFound, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/firebase";
 import { Problem } from "@/app/utils/types";
 
+type SerializableProblem = Omit<Problem, "handlerFunction"> & { handlerFunction: string };
+
 type ProblemContentProps = {
-    problem: Problem;
+    problem: SerializableProblem;
     pid: string;
 };
 
@@ -41,7 +43,7 @@ export default function ProblemContent({ problem, pid }: ProblemContentProps) {
 				<ProblemNavBar />
 			</div>
 			<div className='flex-1 min-h-0 bg-linear-to-b from-gray-700 to-black'>
-				<Workflow key={pid} problem={problem} />
+				<Workflow key={pid} problem={problem as any} />
 			</div>
 		</div>
 	);
