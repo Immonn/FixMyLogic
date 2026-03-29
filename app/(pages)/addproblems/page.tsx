@@ -92,7 +92,7 @@ const AddProblemPage: React.FC = () => {
 							type='text'
 							placeholder='e.g. search-a-2d-matrix-ii'
 							name='id'
-							className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+							className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 							required
 						/>
 					</div>
@@ -108,7 +108,7 @@ const AddProblemPage: React.FC = () => {
 							type='text'
 							placeholder='e.g. Search a 2D Matrix II'
 							name='title'
-							className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+							className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 							required
 						/>
 					</div>
@@ -123,7 +123,7 @@ const AddProblemPage: React.FC = () => {
 								onChange={handleInput}
 								value={inputs.difficulty}
 								name='difficulty'
-								className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+								className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all [&>option]:bg-dark-layer-2'
 								required
 							>
 								<option value='Easy'>Easy</option>
@@ -143,7 +143,7 @@ const AddProblemPage: React.FC = () => {
 								type='number'
 								placeholder='0'
 								name='order'
-								className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+								className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 								required
 							/>
 						</div>
@@ -160,7 +160,7 @@ const AddProblemPage: React.FC = () => {
 							type='text'
 							placeholder='e.g. Two Pointers'
 							name='category'
-							className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+							className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 							required
 						/>
 					</div>
@@ -176,7 +176,7 @@ const AddProblemPage: React.FC = () => {
 							type='text'
 							placeholder='e.g. jYmX9H9_TfE'
 							name='videoId'
-							className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+							className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 						/>
 					</div>
 
@@ -191,7 +191,7 @@ const AddProblemPage: React.FC = () => {
 							type='text'
 							placeholder='URL'
 							name='link'
-							className='bg-dark-fill-3 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
+							className='bg-dark-layer-2 border border-dark-divider-border-2 text-white text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2.5 outline-none transition-all'
 						/>
 					</div>
 
