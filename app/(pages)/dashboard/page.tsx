@@ -6,8 +6,29 @@ import { useRouter } from "next/navigation";
 import { FaCubes, FaGem, FaNetworkWired } from "react-icons/fa";
 import { MdOutlineGridOn } from "react-icons/md";
 
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/firebase";
+
 const LandingPage = () => {
-    const router = useRouter();
+    const [user, loadingAuth] = useAuthState(auth);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!loadingAuth && !user) {
+			router.push("/auth/signin");
+		}
+	}, [user, loadingAuth, router]);
+
+	if (loadingAuth) {
+		return (
+			<div className='bg-dark-layer-2 min-h-screen flex items-center justify-center'>
+				<div className='text-white text-xl animate-pulse'>Loading...</div>
+			</div>
+		);
+	}
+
+	if (!user) return null;
 
     return (
         <div className="bg-dark-layer-2 min-h-screen relative font-sans text-white overflow-hidden">
