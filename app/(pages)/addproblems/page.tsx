@@ -1,9 +1,11 @@
 "use client";
 
-import { firestore } from "@/app/firebase/firebase";
+import { auth, firestore } from "@/app/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -21,6 +23,11 @@ const AddProblemPage: React.FC = () => {
 	});
 
 	const [loading, setLoading] = useState(false);
+	const user=useAuthState(auth)
+	const router=useRouter()
+	if (!user){
+		router.push("/login")
+	}
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		setInput({
