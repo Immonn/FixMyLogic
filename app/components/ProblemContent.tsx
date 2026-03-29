@@ -35,21 +35,13 @@ export default function ProblemContent({ problem, pid }: ProblemContentProps) {
 
 	if (!problem) return notFound();
 
-	const serializableProblem = {
-		...problem,
-		handlerFunction:
-			typeof problem.handlerFunction === "function"
-				? problem.handlerFunction.toString()
-				: problem.handlerFunction,
-	};
-
 	return (
 		<div className='h-screen flex flex-col'>
 			<div className='shrink-0'>
 				<ProblemNavBar />
 			</div>
 			<div className='flex-1 min-h-0 bg-linear-to-b from-gray-700 to-black'>
-				<Workflow key={pid} problem={serializableProblem} />
+				<Workflow key={pid} problem={problem} />
 			</div>
 		</div>
 	);

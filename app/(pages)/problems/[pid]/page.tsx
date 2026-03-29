@@ -9,7 +9,15 @@ export default async function Problem({ params }: { params: Promise<{ pid: strin
 
 	if (!problem) return notFound();
 
-	return <ProblemContent problem={problem} pid={pid} />;
+	const serializableProblem = {
+		...problem,
+		handlerFunction:
+			typeof problem.handlerFunction === "function"
+				? problem.handlerFunction.toString()
+				: problem.handlerFunction,
+	};
+
+	return <ProblemContent problem={serializableProblem} pid={pid} />;
 }
 
 export async function generateStaticParams() {
