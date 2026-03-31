@@ -88,4 +88,63 @@ export const search2DMatrix: Problem = {
 	handlerFunction: search2DMatrixHandler,
 	starterFunctionName: "function searchMatrix",
 	order: 5,
+	starterCodePython: `def searchMatrix(matrix, target):
+    # Write your code here
+    pass`,
+	starterCodeCpp: `#include <vector>
+using namespace std;
+
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    // Write your code here
+    return false;
+}`,
+	starterCodeJava: `class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // Write your code here
+        return false;
+    }
+}`,
+	pistonTestCases: {
+		python: `{{USER_CODE}}
+
+tests = [
+    ([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3),
+    ([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13),
+    ([[1]], 1),
+]
+for matrix, target in tests:
+    print(str(searchMatrix(matrix, target)).lower())`,
+		cpp: `#include <iostream>
+#include <vector>
+using namespace std;
+
+{{USER_CODE}}
+
+int main() {
+    vector<vector<int>> m1 = {{1,3,5,7},{10,11,16,20},{23,30,34,60}};
+    vector<vector<int>> m2 = {{1,3,5,7},{10,11,16,20},{23,30,34,60}};
+    vector<vector<int>> m3 = {{1}};
+    vector<pair<vector<vector<int>>,int>> tests = {{m1,3},{m2,13},{m3,1}};
+    for (auto& [matrix, target] : tests) {
+        cout << (searchMatrix(matrix, target) ? "true" : "false") << endl;
+    }
+    return 0;
+}`,
+		java: `{{USER_CODE}}
+
+class Main {
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        int[][][] matrices = {
+            {{1,3,5,7},{10,11,16,20},{23,30,34,60}},
+            {{1,3,5,7},{10,11,16,20},{23,30,34,60}},
+            {{1}}
+        };
+        int[] targets = {3, 13, 1};
+        for (int i = 0; i < matrices.length; i++) {
+            System.out.println(sol.searchMatrix(matrices[i], targets[i]));
+        }
+    }
+}`,
+	},
 };

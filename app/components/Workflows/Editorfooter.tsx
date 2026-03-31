@@ -3,9 +3,10 @@ import { BsChevronUp } from "react-icons/bs";
 
 type EditorFooterProps = {
 	handleSubmission?: () => void;
+	isLoading?: boolean;
 };
 
-const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmission }) => {
+const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmission, isLoading }) => {
 	return (
 		<div className='z-20 w-full shrink-0 border-t border-dark-divider-border-2 bg-dark-layer-1'>
 			<div className='my-2.5 flex w-full items-center justify-between px-5'>
@@ -19,16 +20,18 @@ const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmission }) => {
 				</div>
 				<div className='ml-auto flex shrink-0 items-center space-x-4'>
 					<button
-						className='px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-dark-fill-3  hover:bg-dark-fill-2 text-dark-label-2 rounded-lg'
+						className='px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 text-dark-label-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed'
 						onClick={handleSubmission}
+						disabled={isLoading}
 					>
 						Run
 					</button>
 					<button
-						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded-lg'
+						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed'
 						onClick={handleSubmission}
+						disabled={isLoading}
 					>
-						Submit
+						{isLoading ? 'Running...' : 'Submit'}
 					</button>
 				</div>
 			</div>
