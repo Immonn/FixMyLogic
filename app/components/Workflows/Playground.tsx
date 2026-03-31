@@ -7,6 +7,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import EditorFooter from './Editorfooter';
 import { Problem } from '@/app/utils/types';
+import { indentationMarkers } from '@replit/codemirror-indentation-markers';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '@/app/firebase/firebase';
 import { toast } from 'react-toastify';
@@ -150,7 +151,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved,
                         value={userCode}
                         theme={vscodeDark}
                         onChange={onchange}
-                        extensions={[javascript()]}
+                        extensions={[javascript(), indentationMarkers()]}
                         height='100%'
                         editable={lang === 'JavaScript'}
                         style={{ fontSize: settings.fontSize, height: '100%' }}
