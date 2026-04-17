@@ -73,10 +73,15 @@ const ProblemNavBar: React.FC<NavbarProps> = () => {
         <div className='w-40 flex justify-end'>
             <Timer/>
         </div>
-            <Link href={"/auth/signup"}>
-                <button className='cursor-pointer border border-gray-300 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
-            hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Buymeacoffee</button>
-            </Link>
+            <a 
+                href="https://drive.google.com/file/d/1MDEjqNRFni_g5-E7si8h36YEuYXA-Diz/view?usp=sharing"
+                target='_blank' 
+                rel='noreferrer'
+                className='cursor-pointer border border-gray-300 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
+            hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'
+            >
+                Buymeacoffee
+            </a>
             <div className='w-8 h-8 shrink-0'>
                 {hasMounted && (user ? (
                     <div className='cursor-pointer group relative w-full h-full'>

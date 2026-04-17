@@ -16,10 +16,10 @@ const DashboardNavbar: React.FC<NavbarProps> = () => {
             <img src="/logo.png" alt='FixMyLogic' className='h-full object-contain' />
         </div>
         <div className="flex items-center gap-4">
-            <Link href={"/auth/signup"}>
+            <a href="https://drive.google.com/file/d/1MDEjqNRFni_g5-E7si8h36YEuYXA-Diz/view?usp=sharing">
                 <button className='cursor-pointer border border-gray-300 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
             hover:text-brand-orange hover:bg-white transition duration-300 ease-in-out'>Buymeacoffee</button>
-            </Link>
+            </a>
             {user && (
                 <div className='cursor-pointer group relative'>
                     <img src='/avatar.png' alt='Avatar' width={30} height={30} className='rounded-full' />
